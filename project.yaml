@@ -5,8 +5,95 @@ expectations:
 
 actions:
 
-  generate_study_population:
-    run: cohortextractor:latest generate_cohort --output-format csv.gz --study-definition study_definition
+  create_dummy_data: 
+    run: >
+      ehrql:v0
+        create-dummy-tables 
+        analysis/dataset_definition.py output/dummydata 
+        -- 
+        --day=0
+    outputs: 
+      highly_sensitive:
+        openprompt_dummy: output/dummydata/open_prompt.csv
+
+  edit_dummy_data:
+    run: > 
+      r:latest
+        analysis/dummy_data_editing/edit_automatic_dummy_data.R
+    needs: [create_dummy_data]
+    outputs: 
+      highly_sensitive: 
+        openprompt_dummy_edited: output/dummydata/dummy_edited/open_prompt.csv
+
+  scrape_all_data: 
+    run: >
+      ehrql:v0
+        generate-dataset
+        analysis/scrape_data_response_dates.py
+        --output output/openprompt_all.csv
+        --dummy-tables output/dummydata/dummy_edited
+    needs: [edit_dummy_data]
+    outputs:
+      highly_sensitive: 
+        openprompt_all: output/openprompt_all.csv
+
+  generate_openprompt_survey1: 
+    run: >
+      ehrql:v0
+        generate-dataset 
+        analysis/dataset_definition.py 
+        --output output/openprompt_survey1.csv
+        --dummy-tables output/dummydata/dummy_edited
+        --
+        --day=0
+        --window=5
+    needs: [edit_dummy_data]
     outputs:
       highly_sensitive:
-        cohort: output/input.csv.gz
+        openprompt_survey1: output/openprompt_survey1.csv
+
+  generate_openprompt_survey2: 
+    run: >
+      ehrql:v0
+        generate-dataset 
+        analysis/dataset_definition.py 
+        --output output/openprompt_survey2.csv
+        --dummy-tables output/dummydata/dummy_edited
+        --
+        --day=30
+        --window=5
+    needs: [edit_dummy_data]
+    outputs:
+      highly_sensitive:
+        openprompt_survey2: output/openprompt_survey2.csv
+
+  generate_openprompt_survey3: 
+    run: >
+      ehrql:v0
+        generate-dataset 
+        analysis/dataset_definition.py 
+        --output output/openprompt_survey3.csv
+        --dummy-tables output/dummydata/dummy_edited
+        --
+        --day=60
+        --window=5
+    needs: [edit_dummy_data]
+    outputs:
+      highly_sensitive:
+        openprompt_survey3: output/openprompt_survey3.csv
+
+  generate_openprompt_survey4: 
+    run: >
+      ehrql:v0
+        generate-dataset 
+        analysis/dataset_definition.py 
+        --output output/openprompt_survey4.csv
+        --dummy-tables output/dummydata/dummy_edited
+        --
+        --day=90
+        --window=5
+    needs: [edit_dummy_data]
+    outputs:
+      highly_sensitive:
+        openprompt_survey4: output/openprompt_survey4.csv
+
