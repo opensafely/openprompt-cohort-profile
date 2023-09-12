@@ -4,6 +4,8 @@ You can run this project via [Gitpod](https://gitpod.io) in a web browser by cli
 
 [View on OpenSAFELY](https://jobs.opensafely.org/repo/https%253A%252F%252Fgithub.com%252Fopensafely%252Fopenprompt-cohort-profile)
 
+[Approved project deatails (#71)](https://www.opensafely.org/approved-projects/#project-71)
+
 Details of the purpose and any published outputs from this project can be found at the link above.
 
 The contents of this repository MUST NOT be considered an accurate or valid representation of the study or its purpose. 
