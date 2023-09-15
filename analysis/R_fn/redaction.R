@@ -11,6 +11,19 @@ library('tidyverse')
 library('lubridate')
 #library('gt')
 
+# floor and ceiling any ---------------------------------------------------
+ceiling_any <- function(x, to=1){
+  # round to nearest 100 millionth to avoid floating point errors
+  ceiling(plyr::round_any(x/to, 1/100000000))*to
+}
+
+floor_any <- function(x, to=1){
+  # round to nearest 100 millionth to avoid floating point errors
+  floor(plyr::round_any(x/to, 1/100000000))*to
+}
+
+
+# redaction ---------------------------------------------------------------
 # little function to first redact n<7, then round to nearest 5
 redact_and_round <- function(x, redact_threshold = 7){
   x2 <- redactor2(x, redact_threshold)

@@ -186,4 +186,4 @@ openprompt_mapping <- data.frame(
         "MRC Breathlessness Scale: grade 5"
     )
 )
-write.csv(openprompt_mapping, here::here("analysis/model_questions/openprompt_mapping.csv"), row.names = FALSE)
+write.csv(openprompt_mapping, here::here("analysis/openprompt_mapping.csv"), row.names = FALSE)
