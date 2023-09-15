@@ -119,7 +119,8 @@ actions:
           openprompt_raw_tab: output/data_properties/op_raw_tabulate.txt
           openprompt_mapped_skim: output/data_properties/op_mapped_skim.txt
           openprompt_mapped_tab: output/data_properties/op_mapped_tabulate.txt
-          raw_summ_base_s: output/data_properties/op_baseline_skimwlate.txt
+          raw_summ_base_s: output/data_properties/op_baseline_skim.txt
+          raw_summ_base_t: output/data_properties/op_baseline_tabulate.txt
           raw_summ_survey1_s: output/data_properties/op_survey1_skim.txt
           raw_summ_survey1_t: output/data_properties/op_survey1_tabulate.txt
           raw_summ_survey2_s: output/data_properties/op_survey2_skim.txt
