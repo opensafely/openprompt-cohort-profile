@@ -97,3 +97,54 @@ actions:
       highly_sensitive:
         openprompt_survey4: output/openprompt_survey4.csv
 
+  extract_linked_tpp_info: 
+    run: >
+      ehrql:v0
+        generate-dataset 
+        analysis/add_tpp_data.py 
+        --output output/openprompt_linked_tpp.csv.gz
+    outputs:
+      highly_sensitive:
+        openprompt_survey1: output/openprompt_linked_tpp.csv.gz
+  
+  datacombine_and_figure1:
+      run: >
+        r:latest analysis/data_import/001_data_combine.R
+      needs: [scrape_all_data, generate_openprompt_survey1, generate_openprompt_survey2, generate_openprompt_survey3, generate_openprompt_survey4]
+      outputs: 
+        highly_sensitive: 
+          openprompt_combined: output/openprompt_raw.csv.gz
+        moderately_sensitive:
+          openprompt_raw_skim: output/data_properties/op_raw_skim.txt
+          openprompt_raw_tab: output/data_properties/op_raw_tabulate.txt
+          openprompt_mapped_skim: output/data_properties/op_mapped_skim.txt
+          openprompt_mapped_tab: output/data_properties/op_mapped_tabulate.txt
+          raw_summ_base_s: output/data_properties/op_baseline_skimwlate.txt
+          raw_summ_survey1_s: output/data_properties/op_survey1_skim.txt
+          raw_summ_survey1_t: output/data_properties/op_survey1_tabulate.txt
+          raw_summ_survey2_s: output/data_properties/op_survey2_skim.txt
+          raw_summ_survey2_t: output/data_properties/op_survey2_tabulate.txt
+          raw_summ_survey3_s: output/data_properties/op_survey3_skim.txt
+          raw_summ_survey3_t: output/data_properties/op_survey3_tabulate.txt
+          raw_summ_survey4_s: output/data_properties/op_survey4_skim.txt
+          raw_summ_survey4_t: output/data_properties/op_survey4_tabulate.txt
+          check_days_after_baseline: output/data_properties/sample_day_lags.pdf
+          p1a_jpeg: output/figures/p1a_index_dates.jpeg
+          p1a_tiff: output/figures/p1a_index_dates.tiff
+          p1b_jpeg: output/figures/p1b_recorded_question_responses.jpeg
+          p1b_tiff: output/figures/p1b_recorded_question_responses.tiff
+          p1c_jpeg: output/figures/p1c_anyresponse_hist.jpeg
+          p1c_tiff: output/figures/p1c_anyresponse_hist.tiff
+          p1d_jpeg: output/figures/p1d_ltfu.jpeg
+          p1d_tiff: output/figures/p1d_ltfu.tiff
+          p1_jpeg: output/figures/p1_fup.jpeg
+          p1_tiff: output/figures/p1_fup.tiff
+  
+  import_linked_tpp: 
+    run:   
+      r:latest analysis/data_import/002_import_linked_tpp.R
+    needs: [extract_linked_tpp_info]
+    outputs: 
+      moderately_sensitive:
+        openprompt_tpp_skim: output/data_properties/op_tpp_skim.txt
+        openprompt_tpp_tab: output/data_properties/op_tpp_tabulate.txt
