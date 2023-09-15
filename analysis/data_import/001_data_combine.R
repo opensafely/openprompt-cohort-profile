@@ -4,9 +4,29 @@ library(here)
 library(arrow)
 library(gtsummary)
 library(haven)
-source(here("analysis/R_fn/summarise_data.R"))
-source(here("analysis/model_questions/master_mapping.R"))
+library(survival)
+library(survminer)
+library(cowplot)
 
+## run some functions needed later  
+source(here("analysis/R_fn/summarise_data.R"))
+source(here("analysis/R_fn/create_rounded_surv_table.R"))
+source(here("analysis/R_fn/redaction.R"))
+source(here("analysis/R_fn/ggplot_theme.R"))
+source(here("analysis/master_mapping.R"))
+
+## create directories for output
+fs::dir_create(here("output/data_properties"))
+fs::dir_create(here("output/figures"))
+
+# import the day of any response by each participant ----------------------
+## make the data long format and keep value == 1 only (i.e. a valid response was recorded to eq5d question)
+op_anyresponse <- read_csv(here("output/openprompt_all.csv")) %>% 
+  pivot_longer(-patient_id, names_pattern = "day_(.*)", names_to = "day") %>% 
+  filter(value == 1) %>% 
+  mutate(day = as.numeric(day))
+
+# import selected survey response data ------------------------------------
 op_baseline <- read_csv(here("output/openprompt_survey1.csv"),
                         col_types = list(
                           patient_id = "d",
@@ -138,7 +158,6 @@ op_surveys <- bind_rows(
   op_survey3,
   op_survey4
 )
-
 
 # left join baseline vars -------------------------------------------------
 op_raw <- op_baseline %>% 
@@ -442,117 +461,94 @@ summarise_data(data_in = op_neat, filename = "op_mapped")
 # output data -------------------------------------------------------------
 readr::write_csv(op_neat, here::here("output/openprompt_raw.csv.gz"))
 
-# STATA variable names have max length of 32. So truncate anynames longer than that
-
-# make a new dataset to output as the stata .dta
-op_stata <- op_neat 
-
-# get the names of the original data
-df_names <- names(op_neat)
-
-# replace names on new dataset to 1-32 characters of original names
-names(op_stata) <- substr(df_names, 1, 32)
-
-# output as .dta
-haven::write_dta(op_stata, path = here::here("output/op_stata.dta"))
-
-# baseline summary --------------------------------------------------------
-# op_raw contains every participant ID included in the `open_prompt` table 
-# we therefore have a lot of rows with nothing more than NA in them
-# a lot of people filled in `op_survey1`. Fewer filled in `op_survey2`,
-# `op_survey3` & `op_survey4` etc.
-# Remove these before summarising:
-
-tab1 <- op_neat %>%
-  select(-where(is.Date), -patient_id) %>% 
-  tbl_summary(
-    by = survey_response,
-    statistic = list(
-      all_continuous() ~ "{p50} ({p25}-{p75})",
-      all_categorical() ~ "{n} ({p}%)"
-    ),
-    type = list(
-      days_since_baseline ~ "continuous",
-      EuroQol_score ~ "continuous",
-      n_covids ~ "categorical",
-      covid_duration ~ "categorical",
-      n_vaccines ~ "categorical",
-      eq5d_mobility ~ "categorical",
-      eq5d_selfcare ~ "categorical",
-      eq5d_usualactivities ~ "categorical",
-      eq5d_pain_discomfort ~ "categorical",
-      eq5d_anxiety_depression ~ "categorical",
-      work_affected ~ "categorical",
-      life_affected ~ "categorical",
-      facit_fatigue ~ "categorical",
-      facit_weak  ~ "categorical",
-      facit_listless ~ "categorical",
-      facit_tired ~ "categorical",
-      facit_trouble_starting ~ "categorical",
-      facit_trouble_finishing ~ "categorical",
-      facit_energy ~ "categorical",
-      facit_usual_activities ~ "categorical",
-      facit_sleep_during_day ~ "categorical",
-      facit_eat ~ "categorical",
-      facit_need_help ~ "categorical",
-      facit_frustrated  ~ "categorical",
-      facit_limit_social_activity ~ "categorical",
-      base_ethnicity ~ "categorical",
-      base_highest_edu ~ "categorical",
-      base_disability ~ "categorical",
-      base_relationship ~ "categorical",
-      base_gender ~ "categorical",
-      base_hh_income ~ "categorical",
-      covid_history ~ "categorical",
-      recovered_from_covid ~ "categorical",
-      vaccinated ~ "categorical",
-      employment_status ~ "categorical",
-      mrc_breathlessness ~ "categorical"
-    ),
-    digits = all_continuous() ~ 1
-  )
-
-tab1 %>%
-  as_gt() %>%
-  gt::gtsave(
-    filename = "tab1_baseline_description.html",
-    path = fs::path(here("output"))
-  )
-
-
 # plot distribution of day0 -----------------------------------------------
-pdf(here::here("output/data_properties/index_dates.pdf"), width = 6, height = 4)
-ggplot(op_neat, aes(x = index_date)) +
-  geom_density(fill = "gray") +
-  theme_classic()
-dev.off()
-
-# is creation_date consistent across participant survey responses?  ---------
-date_consistency <- op_neat %>% 
-  ungroup() %>% 
-  # only keep the idenitifier cols and the creation_date variables
-  dplyr::select(patient_id, survey_response, survey_date, contains("creation_date")) %>% 
-  # get rid of those with missing survey_date: this means there was no valid response in the dataset_definition
-  filter(!is.na(survey_date)) %>% 
-  # remove survey_date and baseline_creation_date to avoid confusion
-  dplyr::select(-survey_date, -baseline_creation_date) %>% 
-  # make it a long data.frame to summarise 
-  pivot_longer(cols = contains("creation_date"), names_to = "var", values_to = "date") %>%
-  # group by each participant for each survey response
-  group_by(patient_id, survey_response) %>% 
-  # summarise the date column: number of unique values, number NA, min and max
-  summarise(n_date_vals = n_distinct(date, na.rm = T),
-            min_date = min(date, na.rm = T), 
-            max_date = max(date, na.rm = T),
-            n_missing = sum(is.na(date)),
-            .groups = "keep")
-
-summ_date_consistency <- date_consistency %>% 
-  # get the summary of these summaries because I can't scroll through thousands of responses
-  ungroup() %>% 
-  count(n_date_vals)
-
-write_csv(date_consistency, here::here("output/data_properties/survey_date_consistency.csv"))
-write_csv(summ_date_consistency, here::here("output/data_properties/survey_date_consistency_summary.csv"))
+p1a <- ggplot(op_neat, aes(x = index_date)) +
+  geom_density(fill = "gray", col = "gray50") +
+  theme_ali() +
+  labs(x = "First response date",
+       y = "Density")
+ggsave(p1a, filename = here::here("output/figures/p1a_index_dates.jpeg"),
+       width=12, height = 6, units="in")
+ggsave(p1a, filename = here::here("output/figures/p1a_index_dates.tiff"),
+       width=12, height = 6, units="in")
 
 
+# plot the distriubtion of selected responses in ALL the data -------------
+op_offset <- op_neat %>% 
+  # keep the id, index_date, and all the response dates
+  dplyr::select(patient_id, index_date, ends_with("creation_date")) %>% 
+  # make all the response dates long format and drop NA vals
+  pivot_longer(cols = -c(patient_id, index_date), names_pattern = "(.*)_creation_date") %>% 
+  drop_na() %>% 
+  # calculate offset variable
+  mutate(offset = as.numeric(value - index_date)) 
+
+p1b <- ggplot(op_offset, aes(x = offset)) +
+  geom_histogram(fill = "darkblue", col = "gray50", bins = 50) +
+  geom_vline(xintercept = 30, lty = 2) + 
+  geom_vline(xintercept = 60, lty = 2) + 
+  geom_vline(xintercept = 90, lty = 2) +
+  xlim(c(-5, 120)) +
+  ylim(c(0, NA)) +
+  theme_ali() +
+  labs(x = "Days since index", 
+       y = "Included responses")
+
+ggsave(p1b, filename = here::here("output/figures/p1b_recorded_question_responses.jpeg"),
+       width=12, height = 6, units="in")
+ggsave(p1b, filename = here::here("output/figures/p1b_recorded_question_responses.tiff"),
+       width=12, height = 6, units="in")
+
+# plot the distribution of ANY response to Eq5d compulsory question -------
+
+p1c <- ggplot(op_anyresponse, aes(x = day)) +
+  geom_histogram(fill = "darkred", col = "gray50", bins = 50) + 
+  geom_vline(xintercept = 30, lty = 2) + 
+  geom_vline(xintercept = 60, lty = 2) + 
+  geom_vline(xintercept = 90, lty = 2) +
+  xlim(c(-5, 120)) +
+  ylim(c(0, NA)) +
+  theme_ali() +
+  labs(x = "Days since index",
+       y = "Any response")
+
+ggsave(p1c, filename = here::here("output/figures/p1c_anyresponse_hist.jpeg"),
+       width=12, height = 6, units="in")
+ggsave(p1c, filename = here::here("output/figures/p1c_anyresponse_hist.tiff"),
+       width=12, height = 6, units="in")
+
+# plot reverse KM for loss to follow up -----------------------------------
+op_max_fup <- op_neat %>% 
+  group_by(patient_id) %>% 
+  filter(survey_response == max(survey_response)) %>% 
+  mutate(offset = as.numeric(survey_date - index_date) + 1,
+         status = 1) %>% 
+  dplyr::select(patient_id, survey_response, time = offset, status)
+
+surv_data <- create_rounded_surv_table(op_max_fup)
+
+p1d <- surv_data %>%
+  ggplot(aes(x = time, y = surv)) + geom_step(size = 0.5) +
+  geom_rect(aes(xmin=lagtime, xmax = time, ymin=(surv.ll), ymax=(surv.ul)), alpha=0.1, colour="transparent") +
+  ylim(0,1) +
+  #scale_y_continuous(expand = expansion(mult=c(0,0.02))) +
+  labs(
+    x="Time since first response (days)",
+    y = "Lost to follow up",
+    title = "") +
+  theme_ali() +
+  guides(fill="none")
+
+ggsave(p1d, filename = here::here("output/figures/p1d_ltfu.jpeg"),
+       width=12, height = 6, units="in")
+ggsave(p1d, filename = here::here("output/figures/p1d_ltfu.tiff"),
+       width=12, height = 6, units="in")
+
+
+# combine follow up plots -------------------------------------------------
+p1 <- plot_grid(p1a, p1b, p1d, p1c, nrow = 2)
+
+ggsave(p1, filename = here::here("output/figures/p1_fup.jpeg"),
+       width=12, height = 6, units="in")
+ggsave(p1, filename = here::here("output/figures/p1_fup.tiff"),
+       width=12, height = 6, units="in")
