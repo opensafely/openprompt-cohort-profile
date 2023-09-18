@@ -105,7 +105,7 @@ actions:
         --output output/openprompt_linked_tpp.csv.gz
     outputs:
       highly_sensitive:
-        openprompt_survey1: output/openprompt_linked_tpp.csv.gz
+        linked_tpp_data: output/openprompt_linked_tpp.csv.gz
   
   datacombine_and_figure1:
       run: >
@@ -130,22 +130,35 @@ actions:
           raw_summ_survey4_s: output/data_properties/op_survey4_skim.txt
           raw_summ_survey4_t: output/data_properties/op_survey4_tabulate.txt
           check_days_after_baseline: output/data_properties/sample_day_lags.pdf
-          p1a_jpeg: output/figures/p1a_index_dates.jpeg
-          p1a_tiff: output/figures/p1a_index_dates.tiff
-          p1b_jpeg: output/figures/p1b_recorded_question_responses.jpeg
-          p1b_tiff: output/figures/p1b_recorded_question_responses.tiff
-          p1c_jpeg: output/figures/p1c_anyresponse_hist.jpeg
-          p1c_tiff: output/figures/p1c_anyresponse_hist.tiff
-          p1d_jpeg: output/figures/p1d_ltfu.jpeg
-          p1d_tiff: output/figures/p1d_ltfu.tiff
-          p1_jpeg: output/figures/p1_fup.jpeg
-          p1_tiff: output/figures/p1_fup.tiff
+          p1a_jpeg: output/plots/p1a_index_dates.jpeg
+          p1a_tiff: output/plots/p1a_index_dates.tiff
+          p1b_jpeg: output/plots/p1b_recorded_question_responses.jpeg
+          p1b_tiff: output/plots/p1b_recorded_question_responses.tiff
+          p1c_jpeg: output/plots/p1c_anyresponse_hist.jpeg
+          p1c_tiff: output/plots/p1c_anyresponse_hist.tiff
+          p1d_jpeg: output/plots/p1d_ltfu.jpeg
+          p1d_tiff: output/plots/p1d_ltfu.tiff
+          p1_jpeg: output/plots/p1_fup.jpeg
+          p1_tiff: output/plots/p1_fup.tiff
   
   import_linked_tpp: 
     run:   
       r:latest analysis/data_import/002_import_linked_tpp.R
     needs: [extract_linked_tpp_info]
     outputs: 
+      highly_sensitive: 
+        linked_tpp_data_edited: output/openprompt_linked_tpp_edited.csv.gz
       moderately_sensitive:
         openprompt_tpp_skim: output/data_properties/op_tpp_skim.txt
         openprompt_tpp_tab: output/data_properties/op_tpp_tabulate.txt
+
+  export_table1_stats: 
+    run: 
+      r:latest analysis/baseline_descriptive/001-table1stats.R
+    needs: [datacombine_and_figure1, import_linked_tpp]
+    outputs: 
+      moderately_sensitive: 
+        table1: output/tables/table1.html
+        table1_stats: output/tables/table1_stats.csv
+
+# Then need to run analysis/baseline_descriptive/002-map-making.R to produce the Figure 2 for the paper
