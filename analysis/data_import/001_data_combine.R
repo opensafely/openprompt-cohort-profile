@@ -17,7 +17,7 @@ source(here("analysis/master_mapping.R"))
 
 ## create directories for output
 fs::dir_create(here("output/data_properties"))
-fs::dir_create(here("output/figures"))
+fs::dir_create(here("output/plots"))
 
 # import the day of any response by each participant ----------------------
 ## make the data long format and keep value == 1 only (i.e. a valid response was recorded to eq5d question)
@@ -467,9 +467,9 @@ p1a <- ggplot(op_neat, aes(x = index_date)) +
   theme_ali() +
   labs(x = "First response date",
        y = "Density")
-ggsave(p1a, filename = here::here("output/figures/p1a_index_dates.jpeg"),
+ggsave(p1a, filename = here::here("output/plots/p1a_index_dates.jpeg"),
        width=12, height = 6, units="in")
-ggsave(p1a, filename = here::here("output/figures/p1a_index_dates.tiff"),
+ggsave(p1a, filename = here::here("output/plots/p1a_index_dates.tiff"),
        width=12, height = 6, units="in")
 
 
@@ -494,9 +494,9 @@ p1b <- ggplot(op_offset, aes(x = offset)) +
   labs(x = "Days since index", 
        y = "Included responses")
 
-ggsave(p1b, filename = here::here("output/figures/p1b_recorded_question_responses.jpeg"),
+ggsave(p1b, filename = here::here("output/plots/p1b_recorded_question_responses.jpeg"),
        width=12, height = 6, units="in")
-ggsave(p1b, filename = here::here("output/figures/p1b_recorded_question_responses.tiff"),
+ggsave(p1b, filename = here::here("output/plots/p1b_recorded_question_responses.tiff"),
        width=12, height = 6, units="in")
 
 # plot the distribution of ANY response to Eq5d compulsory question -------
@@ -512,9 +512,9 @@ p1c <- ggplot(op_anyresponse, aes(x = day)) +
   labs(x = "Days since index",
        y = "Any response")
 
-ggsave(p1c, filename = here::here("output/figures/p1c_anyresponse_hist.jpeg"),
+ggsave(p1c, filename = here::here("output/plots/p1c_anyresponse_hist.jpeg"),
        width=12, height = 6, units="in")
-ggsave(p1c, filename = here::here("output/figures/p1c_anyresponse_hist.tiff"),
+ggsave(p1c, filename = here::here("output/plots/p1c_anyresponse_hist.tiff"),
        width=12, height = 6, units="in")
 
 # plot reverse KM for loss to follow up -----------------------------------
@@ -539,16 +539,16 @@ p1d <- surv_data %>%
   theme_ali() +
   guides(fill="none")
 
-ggsave(p1d, filename = here::here("output/figures/p1d_ltfu.jpeg"),
+ggsave(p1d, filename = here::here("output/plots/p1d_ltfu.jpeg"),
        width=12, height = 6, units="in")
-ggsave(p1d, filename = here::here("output/figures/p1d_ltfu.tiff"),
+ggsave(p1d, filename = here::here("output/plots/p1d_ltfu.tiff"),
        width=12, height = 6, units="in")
 
 
 # combine follow up plots -------------------------------------------------
 p1 <- plot_grid(p1a, p1b, p1d, p1c, nrow = 2)
 
-ggsave(p1, filename = here::here("output/figures/p1_fup.jpeg"),
+ggsave(p1, filename = here::here("output/plots/p1_fup.jpeg"),
        width=12, height = 6, units="in")
-ggsave(p1, filename = here::here("output/figures/p1_fup.tiff"),
+ggsave(p1, filename = here::here("output/plots/p1_fup.tiff"),
        width=12, height = 6, units="in")
