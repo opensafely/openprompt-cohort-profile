@@ -8,7 +8,8 @@ from ehrql.tables.beta.tpp import (
     sgss_covid_all_tests,
     hospital_admissions,
     vaccinations,
-    open_prompt
+    open_prompt,
+    household_memberships_2020
 )
 import datetime
 
@@ -17,8 +18,7 @@ from variable_lib import (
     address_as_of,
     create_sequential_variables,
     hospitalisation_diagnosis_matches,
-    long_covid_events_during,
-    long_covid_dx_during
+    long_covid_events_during
 )
 import codelists
 
@@ -53,11 +53,13 @@ dataset.pt_end_date = case(
 )
 
 # Demographic variables
+address_at_start = address_as_of(study_start_date)
 dataset.sex = patients.sex
 dataset.age = age_as_of(study_start_date)
-dataset.msoa = address_as_of(study_start_date).msoa_code
+dataset.msoa = address_at_start.msoa_code
 dataset.practice_nuts = registration.practice_nuts1_region_name
-dataset.imd = address_as_of(study_start_date).imd_rounded
+dataset.imd = address_at_start.imd_rounded
+dataset.ruc = address_at_start.rural_urban_classification
 
 # Ethnicity in 6 categories
 dataset.ethnicity = clinical_events.where(clinical_events.ctv3_code.is_in(codelists.ethnicity)) \
@@ -74,7 +76,6 @@ dataset.first_lc_code = first_long_covid_record.snomedct_code
 dataset.n_lc_records = long_covid_record.count_for_patient()
 dataset.n_distinct_lc_records = long_covid_record.snomedct_code.count_distinct_for_patient()
 dataset.has_covid_dx = long_covid_record.where(long_covid_record.snomedct_code.is_in(codelists.long_covid_nice_dx)).count_for_patient()
-
 
 # covid tests
 all_test_positive = sgss_covid_all_tests \
@@ -211,7 +212,12 @@ dataset.comorbid_count = binary_haem_cancer + \
     binary_permanent_immune + \
     binary_temp_immune
 
+# household size as of 2020
+dataset.hh_size = household_memberships_2020.household_size
+
 # Exclusion criteria - consistent with protocols
 # remove missing age and anyone not male/female
 population = (dataset.age <= 100) & (dataset.age >= 18) & (dataset.sex.contains("male")) & (registrations_number == 1)
 dataset.define_population(population)
+
+dataset.configure_dummy_data(population_size = 5000)

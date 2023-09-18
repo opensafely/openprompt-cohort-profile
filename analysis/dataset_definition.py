@@ -46,6 +46,7 @@ filtered_open_prompt = (
 dataset = Dataset()
 
 dataset.define_population(filtered_open_prompt.exists_for_patient())
+dataset.configure_dummy_data(population_size = 5000)
 
 dataset.creation_date = (
     filtered_open_prompt
