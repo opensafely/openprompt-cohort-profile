@@ -459,7 +459,7 @@ op_neat$mrc_breathlessness <- factor(op_neat$mrc_breathlessness,
 summarise_data(data_in = op_neat, filename = "op_mapped")
 
 # output data -------------------------------------------------------------
-readr::write_csv(op_neat, here::here("output/openprompt_raw.csv.gz"))
+arrow::write_parquet(op_neat, sink = here::here("output/openprompt_raw.gz.parquet"))
 
 # plot distribution of day0 -----------------------------------------------
 p1a <- ggplot(op_neat, aes(x = index_date)) +

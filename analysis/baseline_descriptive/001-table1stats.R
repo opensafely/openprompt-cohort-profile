@@ -1,6 +1,7 @@
 library(tidyverse)
 library(gt)
 library(gtsummary)
+library(arrow)
 library(here)
 
 ## create folder for outputs to go to
@@ -11,12 +12,12 @@ fs::dir_create(output_dir_tab)
 source(here("analysis/R_fn/redaction.R"))
 
 ## set redaction threshold
-threshold <- 5
+threshold <- 7
 
 # read_in_data ------------------------------------------------------------
-op_neat <- read_csv(here("output/openprompt_raw.csv.gz"))
+op_neat <- arrow::read_parquet(here("output/openprompt_raw.gz.parquet"))
+op_tpp <- arrow::read_parquet(here("output/openprompt_linked_tpp_edited.gz.parquet"))
 
-op_tpp <- read_csv(here("output/openprompt_linked_tpp_edited.csv.gz"))
 op_master <- op_neat %>% 
   left_join(op_tpp, by = "patient_id")
 

@@ -113,7 +113,7 @@ actions:
       needs: [scrape_all_data, generate_openprompt_survey1, generate_openprompt_survey2, generate_openprompt_survey3, generate_openprompt_survey4]
       outputs: 
         highly_sensitive: 
-          openprompt_combined: output/openprompt_raw.csv.gz
+          openprompt_combined: output/openprompt_raw.gz.parquet
         moderately_sensitive:
           openprompt_raw_skim: output/data_properties/op_raw_skim.txt
           openprompt_raw_tab: output/data_properties/op_raw_tabulate.txt
@@ -147,7 +147,7 @@ actions:
     needs: [extract_linked_tpp_info]
     outputs: 
       highly_sensitive: 
-        linked_tpp_data_edited: output/openprompt_linked_tpp_edited.csv.gz
+        linked_tpp_data_edited: output/openprompt_linked_tpp_edited.gz.parquet
       moderately_sensitive:
         openprompt_tpp_skim: output/data_properties/op_tpp_skim.txt
         openprompt_tpp_tab: output/data_properties/op_tpp_tabulate.txt
@@ -162,3 +162,14 @@ actions:
         table1_stats: output/tables/table1_stats.csv
 
 # Then need to run analysis/baseline_descriptive/002-map-making.R to produce the Figure 2 for the paper
+
+  export_table2_fup_stats: 
+    run: 
+      r:latest analysis/followup_response/001-followup-table.R
+    needs: [datacombine_and_figure1]
+    outputs:
+      moderately_sensitive: 
+        table2: output/tables/table2_followup.html
+        table2_stats: output/tables/table2_fup_stats.csv
+
+# Then need to run...

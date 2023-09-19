@@ -73,4 +73,4 @@ levels(op_tpp_edit$rural_urban) <- c(rep("Urban", 4), rep("Rural", 4))
 
 summarise_data(data_in = op_tpp_edit, filename = "op_tpp")
 
-readr::write_csv(op_tpp_edit, here::here("output/openprompt_linked_tpp_edited.csv.gz"))
+arrow::write_parquet(op_tpp_edit, here::here("output/openprompt_linked_tpp_edited.gz.parquet"))

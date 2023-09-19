@@ -151,7 +151,7 @@ if(!file.exists(here("data/NUTS_Level_1_(January_2018)_Boundaries.shp"))) {
     pivot_wider(values_from = stat)
     
   p1d <- ggplot(continuous_data, aes(x = variable, y = mean)) +
-    geom_linerange(aes(ymin = p25, ymax = p75), colour = "darkblue") +
+    geom_errorbar(aes(ymin = p25, ymax = p75), colour = "darkblue", width = 0.25) +
     geom_point(col = "darkblue", size = 20, shape = 18) +
     labs(x = "", y = "Mean (IQR)") +
     ylim(c(0,100)) +
