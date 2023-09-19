@@ -14,20 +14,12 @@ index_date = (
 # response. We expect this to be >= 0.
 offset_from_index_date = (open_prompt.creation_date - index_date).days
 
-# Filter opne_prompt table to only include responses recorded within 5 days 
-# of the --days argument
-filtered_open_prompt = (
-    open_prompt.where(open_prompt.ctv3_code == "XaYwl")
-    .where(open_prompt.numeric_value >= 0)
-    .where(open_prompt.numeric_value <= 5)
-)
-
 dataset = Dataset()
 
-dataset.define_population(filtered_open_prompt.exists_for_patient())
+dataset.define_population(open_prompt.exists_for_patient())
 
 for day in range(0, 120):
-    today_data = filtered_open_prompt.where(offset_from_index_date == day)
+    today_data = open_prompt.where(offset_from_index_date == day)
 
     record_yesno = case(
         when(today_data.exists_for_patient()).then(1),
