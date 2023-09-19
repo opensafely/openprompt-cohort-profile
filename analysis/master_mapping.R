@@ -179,11 +179,11 @@ openprompt_mapping <- data.frame(
         "FACIT: need help for usual activities",
         "FACIT: frustrated",
         "FACIT: limit social activity",
-        "MRC Breathlessness Scale: grade 1",
-        "MRC Breathlessness Scale: grade 2",
-        "MRC Breathlessness Scale: grade 3",
-        "MRC Breathlessness Scale: grade 4",
-        "MRC Breathlessness Scale: grade 5"
+        "Grade 1: I only get breathless with strenuous exercise",
+        "Grade 2: I get short of breath when hurrying on level ground or walking up a slight hill",
+        "Grade 3: On level ground, I walk slower than people of my age because of breathlessness, or I have to stop for breath when walking at my own pace on the level",
+        "Grade 4: I stop for breath after walking about 100 yards or after a few minutes on level ground",
+        "Grade 5: I am too breathless to leave the house or I am breathless when dressing/undressing"
     )
 )
 write.csv(openprompt_mapping, here::here("analysis/openprompt_mapping.csv"), row.names = FALSE)
