@@ -13,7 +13,7 @@ source(here("analysis/R_fn/redaction.R"))
 source(here("analysis/R_fn/ggplot_theme.R"))
 
 ## set redaction threshold
-threshold <- 5
+threshold <- 7
 
 # read_in_data ------------------------------------------------------------
 if(!file.exists(here("data/NUTS_Level_1_(January_2018)_Boundaries.shp"))) {
@@ -137,11 +137,32 @@ if(!file.exists(here("data/NUTS_Level_1_(January_2018)_Boundaries.shp"))) {
   p1b <- barcharts(tpp_data)
   p1c <- barcharts(app_data)
  
+  ## p1d - the continuous data
+  continuous_data <- table1_stats %>% 
+    filter(is.na(level)) %>% 
+    mutate(stat = stringr::str_split(stat, n = 4, pattern = "\\(|-|\\)")) %>% 
+    unnest(stat) %>% 
+    mutate(stat = as.numeric(stat),
+           name = c("mean", "p25", "p75", NA)) %>% 
+    filter(!is.na(stat)) %>% 
+    pivot_wider(values_from = stat)
+    
+  p1d <- ggplot(continuous_data, aes(x = variable, y = mean)) +
+    geom_linerange(aes(ymin = p25, ymax = p75), colour = "darkblue") +
+    geom_point(col = "darkblue", size = 20, shape = 18) +
+    labs(x = "", y = "Mean (IQR)") +
+    ylim(c(0,100)) +
+    coord_flip() +
+    theme_ali() +
+    theme(axis.line.y = element_blank(),
+          panel.border = element_rect(fill = NA, colour = "white"),
+          panel.grid = element_blank())
+  
   ## combine the plots and output
   figure2 <- cowplot::plot_grid(
-    cowplot::plot_grid(p1c, ncol = 1, labels = c("A")), 
-    cowplot::plot_grid(coverage_plot, p1b, nrow = 1, ncol = 2, labels = c("B", "C"), rel_widths = c(0.4, 0.7)),
-    ncol = 1, nrow = 2, rel_heights = c(1.025, 1))
+    cowplot::plot_grid(p1d, coverage_plot, nrow = 2, ncol = 1, labels = c("A", "C"), rel_heights = c(0.4, 1)),
+    cowplot::plot_grid(p1c, p1b, ncol = 1, labels = c("B", "D"), rel_heights = c(1.025, 1)), 
+    ncol = 2, nrow = 1, rel_widths = c(0.8, 1))
   
   ggsave(filename=here::here("output", "plots","openprompt_figure2.tiff"), figure2, dpi=450, width = 14, height = 12, units = "in", bg = "white")
   ggsave(filename=here::here("output", "plots","openprompt_figure2.png"),  figure2, dpi=450, width = 14, height = 12, units = "in", bg = "white")
