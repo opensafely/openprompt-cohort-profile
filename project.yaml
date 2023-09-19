@@ -165,7 +165,7 @@ actions:
 
   export_table2_fup_stats: 
     run: 
-      r:latest analysis/followup_response/001-followup-table.R
+      r:latest analysis/followup_responses/001-followup-table.R
     needs: [datacombine_and_figure1]
     outputs:
       moderately_sensitive: 
