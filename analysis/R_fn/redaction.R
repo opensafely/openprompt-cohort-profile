@@ -27,8 +27,8 @@ floor_any <- function(x, to=1){
 # little function to first redact n<7, then round to nearest 5
 redact_and_round <- function(x, redact_threshold = 7){
   x2 <- redactor2(x, redact_threshold)
-  # round to nearest 5
-  round(x2/5)*5
+  # round to nearest 7
+  round(x2/7)*7
 }
 
 # little function to first redact n<7, then round to nearest 0.5 
