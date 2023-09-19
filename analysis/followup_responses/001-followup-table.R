@@ -167,4 +167,4 @@ raw_stats_redacted_numeric <- raw_stats %>%
 raw_stats_output <- raw_stats_redacted_catgorical %>% 
   bind_rows(raw_stats_redacted_numeric)
 
-write_csv(raw_stats_output, here::here("output/table2_fup_stats.csv"))
+write_csv(raw_stats_output, here::here("output/tables/table2_fup_stats.csv"))
