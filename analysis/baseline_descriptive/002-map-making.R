@@ -1,6 +1,7 @@
 library(tidyverse)
 library(sf)
 library(janitor)
+library(forcats)
 library(here)
 library(cowplot)
 
@@ -76,7 +77,9 @@ if(!file.exists(here("data/NUTS_Level_1_(January_2018)_Boundaries.shp"))) {
     
     # explicitly order the facet grid
     facet_order <- unique(data_in$variable)[order(unique(data_in$variable), decreasing = FALSE)]
-    
+    if(sum(facet_order=="Linked records available")==1){
+      facet_order <- c("Linked records available", facet_order[facet_order!="Linked records available"])
+    }
     # get x-axis labels
     labeller <- data_in %>% 
       group_by(level_temp) %>% 
@@ -162,7 +165,7 @@ if(!file.exists(here("data/NUTS_Level_1_(January_2018)_Boundaries.shp"))) {
   figure2 <- cowplot::plot_grid(
     cowplot::plot_grid(p1d, coverage_plot, nrow = 2, ncol = 1, labels = c("A", "C"), rel_heights = c(0.4, 1)),
     cowplot::plot_grid(p1c, p1b, ncol = 1, labels = c("B", "D"), rel_heights = c(1.025, 1)), 
-    ncol = 2, nrow = 1, rel_widths = c(0.8, 1))
+    ncol = 2, nrow = 1, rel_widths = c(0.7, 1))
   
   ggsave(filename=here::here("output", "plots","openprompt_figure2.tiff"), figure2, dpi=450, width = 14, height = 12, units = "in", bg = "white")
   ggsave(filename=here::here("output", "plots","openprompt_figure2.png"),  figure2, dpi=450, width = 14, height = 12, units = "in", bg = "white")
