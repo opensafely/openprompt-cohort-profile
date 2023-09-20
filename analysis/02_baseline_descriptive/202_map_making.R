@@ -17,8 +17,8 @@ source(here("analysis/R_fn/ggplot_theme.R"))
 threshold <- 7
 
 # read_in_data ------------------------------------------------------------
-if(!file.exists(here("data/NUTS_Level_1_(January_2018)_Boundaries.shp"))) {
-  stop( "You need to download the NUTS_Level_1_(January_2018)_Boundaries.shp files from https://geoportal.statistics.gov.uk" )
+if(!file.exists(here("data/NUTS_Level_1_January_2018_FEB_in_the_United_Kingdom.shp"))) {
+  stop( "You need to download the NUTS_Level_1_January_2018_FEB_in_the_United_Kingdom.shp files from https://geoportal.statistics.gov.uk" )
 } else if (!file.exists(here("output/tables/table1_stats.csv"))) {
   stop( "You need to release output/table1_stats.csv from the secure server" )
 } else{
@@ -42,7 +42,7 @@ if(!file.exists(here("data/NUTS_Level_1_(January_2018)_Boundaries.shp"))) {
     rename("region_dist" = "p",
            "region" = "level")
   
-  nuts_shp <- st_read("data/NUTS_Level_1_(January_2018)_Boundaries.shp")
+  nuts_shp <- st_read("data/NUTS_Level_1_January_2018_FEB_in_the_United_Kingdom.shp")
   
   nuts_shp_eng <- nuts_shp %>% 
     filter(stringr::str_detect(nuts118nm, "England|Yorkshire|London")) %>% 
