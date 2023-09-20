@@ -8,8 +8,8 @@ library(here)
 
 dir.create(here::here("output/dummydata/dummy_edited/"), showWarnings = FALSE)
 
-source(here::here("analysis/dummy_data_editing/baseline_questions.R"))
-source(here::here("analysis/dummy_data_editing/research_questions.R"))
+source(here::here("analysis/00_dummy_data_editing/baseline_questions.R"))
+source(here::here("analysis/00_dummy_data_editing/research_questions.R"))
 
 op_baseline <- read_csv(here::here("output/dummydata/open_prompt.csv"))
 
