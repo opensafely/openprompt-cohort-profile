@@ -182,5 +182,6 @@ actions:
       moderately_sensitive: 
         venndiagram: output/plots/venn.tiff
         venndiagram_png: output/plots/venn.png
+        venndiagram_pdf: output/plots/venn.pdf
         agreementdata: output/tables/table3_agreement.csv
         

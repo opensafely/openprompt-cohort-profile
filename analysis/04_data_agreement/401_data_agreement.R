@@ -76,7 +76,7 @@ kappa_calc <- function(df, var1, var2){
   kplot <- k %>% signif(2) %>% prettyNum()
   cap <- paste0("Cohen's kappa = ", kplot)
   pA <- ggplot(df) + 
-    geom_venn(aes(A = get(var1), B = get(var2)), fill_color = c("indianred1", "darkslategray2"), set_names = c("OpenPROMPT", "OpenSAFELY")) +
+    geom_venn(aes(A = get(var1), B = get(var2)), fill_color = c("indianred1", "darkslategray2"), set_names = c("OpenPROMPT", "OpenSAFELY"), show_outside = "always") +
     coord_fixed() +
     theme_void()
   
@@ -124,6 +124,7 @@ pcombo <- plot_grid(
   label_x = -0.1
   )
 
+ggsave(filename = here::here("output/plots/venn.pdf"), pcombo, width = 8, height = 14,bg = "white")
 ggsave(filename = here::here("output/plots/venn.tiff"), dpi = 450, pcombo, width = 8, height = 14,bg = "white")
 ggsave(filename = here::here("output/plots/venn.png"), dpi = 450, pcombo, width = 8, height = 14, bg = "white")
 
