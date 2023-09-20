@@ -448,11 +448,11 @@ op_neat$vaccinated <- factor(op_neat$vaccinated,
 # MRC breathlessness
 op_neat$mrc_breathlessness <- factor(op_neat$mrc_breathlessness,
                                      levels = c(
-                                       "MRC Breathlessness Scale: grade 1",
-                                       "MRC Breathlessness Scale: grade 2",
-                                       "MRC Breathlessness Scale: grade 3",
-                                       "MRC Breathlessness Scale: grade 4",
-                                       "MRC Breathlessness Scale: grade 5"
+                                       "Grade 1: I only get breathless with strenuous exercise",
+                                       "Grade 2: I get short of breath when hurrying on level ground or walking up a slight hill",
+                                       "Grade 3: On level ground, I walk slower than people of my age because of breathlessness, or I have to stop for breath when walking at my own pace on the level",
+                                       "Grade 4: I stop for breath after walking about 100 yards or after a few minutes on level ground",
+                                       "Grade 5: I am too breathless to leave the house or I am breathless when dressing/undressing"
                                      ))
 
 # Output summary of the tidied up dataset ---------------------------------
@@ -484,7 +484,7 @@ op_offset <- op_neat %>%
   mutate(offset = as.numeric(value - index_date)) 
 
 p1b <- ggplot(op_offset, aes(x = offset)) +
-  geom_histogram(fill = "darkblue", col = "gray50", bins = 50) +
+  geom_histogram(col = "darkblue", fill = "blue", alpha = 0.4, linewidth = 0.4, bins = 50) +
   geom_vline(xintercept = 30, lty = 2) + 
   geom_vline(xintercept = 60, lty = 2) + 
   geom_vline(xintercept = 90, lty = 2) +
@@ -502,7 +502,7 @@ ggsave(p1b, filename = here::here("output/plots/p1b_recorded_question_responses.
 # plot the distribution of ANY response to Eq5d compulsory question -------
 
 p1c <- ggplot(op_anyresponse, aes(x = day)) +
-  geom_histogram(fill = "darkred", col = "gray50", bins = 50) + 
+  geom_histogram(col = "darkred", fill = "red", alpha = 0.4, linewidth = 0.4, bins = 50) + 
   geom_vline(xintercept = 30, lty = 2) + 
   geom_vline(xintercept = 60, lty = 2) + 
   geom_vline(xintercept = 90, lty = 2) +
@@ -546,7 +546,7 @@ ggsave(p1d, filename = here::here("output/plots/p1d_ltfu.tiff"),
 
 
 # combine follow up plots -------------------------------------------------
-p1 <- plot_grid(p1a, p1b, p1d, p1c, nrow = 2)
+p1 <- plot_grid(p1a, p1b, p1d, p1c, nrow = 2, labels = "AUTO")
 
 ggsave(p1, filename = here::here("output/plots/p1_fup.jpeg"),
        width=12, height = 6, units="in")
