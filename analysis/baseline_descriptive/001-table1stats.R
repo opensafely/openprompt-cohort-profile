@@ -44,7 +44,9 @@ op_table_stats <- op_master %>%
     n_lc_records,
     all_test_positive,
     no_prev_vacc
-    )
+    ) %>% 
+  # create explicit missing category
+  mutate_if(is.factor, ~forcats::fct_explicit_na(.))
 
 var_labels <- list(
   base_gender ~ "Gender (app question)",
