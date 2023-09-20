@@ -75,8 +75,7 @@ if (!file.exists(here("output/tables/table2_fup_stats.csv"))) {
     plot_some_categorical_variables <- function(data_in, stringsearch, yaxis = "n"){
       data_plot <- data_in %>% 
         filter(stringr::str_detect(variable, stringsearch)) %>% 
-        dplyr::select(variable, level, n, p, survey_response) %>% 
-        filter(level != "(Missing)")
+        dplyr::select(variable, level, n, p, survey_response)
       
       data_plot$level <- forcats::as_factor(data_plot$level)
       levels(data_plot$level) <- stringr::str_to_title(levels(data_plot$level))

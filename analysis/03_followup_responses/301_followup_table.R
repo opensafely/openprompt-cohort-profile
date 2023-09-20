@@ -59,8 +59,8 @@ var_labels <- var_labels %>%
   set_names(., map_chr(., all.vars))
 
 # make table 2 `tab_fup` --------------------------------------------------
-op_neat <- op_neat %>% 
-  mutate_if(is.factor, ~forcats::fct_explicit_na(.))
+#op_neat <- op_neat %>% 
+#  mutate_if(is.factor, ~forcats::fct_explicit_na(.))
 
 tab_fup <- op_neat %>%
   select(-where(is.Date), -patient_id) %>% 
