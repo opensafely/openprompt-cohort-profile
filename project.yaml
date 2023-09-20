@@ -19,7 +19,7 @@ actions:
   edit_dummy_data:
     run: > 
       r:latest
-        analysis/dummy_data_editing/edit_automatic_dummy_data.R
+        analysis/00_dummy_data_editing/edit_automatic_dummy_data.R
     needs: [create_dummy_data]
     outputs: 
       highly_sensitive: 
@@ -109,7 +109,7 @@ actions:
   
   datacombine_and_figure1:
       run: >
-        r:latest analysis/data_import/001_data_combine.R
+        r:latest analysis/01_data_import/101_data_combine.R
       needs: [scrape_all_data, generate_openprompt_survey1, generate_openprompt_survey2, generate_openprompt_survey3, generate_openprompt_survey4]
       outputs: 
         highly_sensitive: 
@@ -142,8 +142,8 @@ actions:
           p1_tiff: output/plots/p1_fup.tiff
   
   import_linked_tpp: 
-    run:   
-      r:latest analysis/data_import/002_import_linked_tpp.R
+    run: >
+      r:latest analysis/01_data_import/102_import_linked_tpp.R
     needs: [extract_linked_tpp_info]
     outputs: 
       highly_sensitive: 
@@ -153,8 +153,8 @@ actions:
         openprompt_tpp_tab: output/data_properties/op_tpp_tabulate.txt
 
   export_table1_stats: 
-    run: 
-      r:latest analysis/baseline_descriptive/001-table1stats.R
+    run: >
+      r:latest analysis/02_baseline_descriptive/201_table1stats.R
     needs: [datacombine_and_figure1, import_linked_tpp]
     outputs: 
       moderately_sensitive: 
@@ -164,12 +164,23 @@ actions:
 # Then need to run analysis/baseline_descriptive/002-map-making.R to produce the Figure 2 for the paper
 
   export_table2_fup_stats: 
-    run: 
-      r:latest analysis/followup_responses/001-followup-table.R
+    run: >
+      r:latest analysis/03_followup_responses/301_followup_table.R
     needs: [datacombine_and_figure1]
     outputs:
       moderately_sensitive: 
         table2: output/tables/table2_followup.html
         table2_stats: output/tables/table2_fup_stats.csv
 
-# Then need to run...
+# Then need to run analysis/03_followup_responses/302_followup_plots.R
+
+  export_data_agreement: 
+    run: > 
+      r:latest analysis/04_data_agreement/401_data_agreement.R
+    needs: [datacombine_and_figure1, import_linked_tpp]
+    outputs: 
+      moderately_sensitive: 
+        venndiagram: output/plots/venn.tiff
+        venndiagram_png: output/plots/venn.png
+        agreementdata: output/tables/table3_agreement.csv
+        
