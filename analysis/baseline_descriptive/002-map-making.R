@@ -25,6 +25,17 @@ if(!file.exists(here("data/NUTS_Level_1_(January_2018)_Boundaries.shp"))) {
   ## import the regional distribution stats 
   table1_stats <- read_csv(here("output/tables/table1_stats.csv"))
   
+  ## make the nice formatted table 1
+  table1 <- table1_stats %>% 
+    group_by(variable) %>% 
+    mutate(row_n = 1:n()) %>% 
+    ungroup() %>% 
+    mutate(variable_lab = ifelse(row_n > 1, "", variable)) %>% 
+    dplyr::select(-row_n, -variable, -n, -p) %>% 
+    dplyr::select(variable_lab, everything())
+  
+  write_csv(table1, here("output/tables/table1_formatted.csv"))
+  
   ## p1A - the map!
   region_dist <- table1_stats %>% 
     filter(variable == "Region") %>% 
