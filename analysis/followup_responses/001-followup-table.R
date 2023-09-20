@@ -21,7 +21,6 @@ threshold <- 7
 # load data ---------------------------------------------------------------
 op_neat <- arrow::read_parquet(here("output/openprompt_raw.gz.parquet"))
 
-
 # create variable labels  -------------------------------------------------
 var_labels <- list(
       days_since_baseline ~ "Days since baseline",
@@ -50,7 +49,7 @@ var_labels <- list(
       facit_frustrated  ~ "FACIT: frustrated by being too tired",
       facit_limit_social_activity ~ "FACIT: limit social activities",
       covid_history ~ "COVID-19 status",
-      recovered_from_covid ~ "Recovered from  most recent COVID-19 infection?",
+      recovered_from_covid ~ "Recovered from most recent COVID-19 infection?",
       vaccinated ~ "Have you had at least one COVID-19 vaccine dose?",
       employment_status ~ "Currently employed",
       mrc_breathlessness ~ "MRC breathlessness scale"
@@ -122,6 +121,7 @@ raw_stats_redacted_catgorical <- raw_stats %>%
   filter(!is.na(n)) %>% 
   mutate(
     n=redact_and_round(n, threshold),
+    trueN=N,
     N=redact_and_round(N, threshold),
     p=round(100*n/N,1),
     N_miss = redact_and_round(N_miss, threshold),
@@ -139,9 +139,10 @@ raw_stats_redacted_catgorical <- raw_stats %>%
   dplyr::select(variable = var_label, 
                 level = variable_levels, 
                 n, p,
+                N = trueN,
                 stat,
-                by) %>% 
-  pivot_wider(names_from = by, values_from = stat, names_prefix = "survey_")
+                survey_response = by)# %>% 
+  #pivot_wider(names_from = by, values_from = stat, names_prefix = "survey_")
 
 
 raw_stats_redacted_numeric <- raw_stats %>% 
@@ -159,12 +160,16 @@ raw_stats_redacted_numeric <- raw_stats %>%
   ) %>% 
   dplyr::select(variable = var_label, 
                 level = variable_levels,
+                mean, p25, p75,
+                n = N_nonmiss,
+                N = N_obs,
                 p = p_nonmiss,
                 stat,
-                by) %>% 
-  pivot_wider(names_from = by, values_from = stat, names_prefix = "survey_")
+                survey_response = by) #%>% 
+  #pivot_wider(names_from = by, values_from = stat, names_prefix = "survey_")
 
 raw_stats_output <- raw_stats_redacted_catgorical %>% 
   bind_rows(raw_stats_redacted_numeric)
 
 write_csv(raw_stats_output, here::here("output/tables/table2_fup_stats.csv"))
+
