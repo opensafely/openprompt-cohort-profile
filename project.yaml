@@ -107,6 +107,16 @@ actions:
       highly_sensitive:
         linked_tpp_data: output/openprompt_linked_tpp.csv.gz
   
+  extract_tpp_demographics: 
+    run: >
+      ehrql:v0
+        generate-dataset 
+        analysis/extract_tpp_demographics.py 
+        --output output/opensafely_tpp_demographics.csv.gz
+    outputs:
+      highly_sensitive:
+        tpp_demog_data: output/opensafely_tpp_demographics.csv.gz
+  
   datacombine_and_figure1:
       run: >
         r:latest analysis/01_data_import/101_data_combine.R
@@ -184,4 +194,13 @@ actions:
         venndiagram_png: output/plots/venn.png
         venndiagram_pdf: output/plots/venn.pdf
         agreementdata: output/tables/table3_agreement.csv
+        
+  export_data_representativeness: 
+    run: > 
+      r:latest analysis/05_representativeness/501_demographic_representativeness.R
+    needs: [datacombine_and_figure1, extract_tpp_demographics]
+    outputs: 
+      moderately_sensitive: 
+        table3_stats: output/tables/table3_rep_stats.csv
+        table3: output/tables/table3_represetativeness.html
         
