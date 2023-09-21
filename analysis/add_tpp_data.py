@@ -25,7 +25,7 @@ import codelists
 dataset = Dataset()
 dataset.define_population(open_prompt.exists_for_patient())
 study_start_date = datetime.date(2020, 3, 1)
-end_date = datetime.date(2023, 7, 20)
+end_date = datetime.date(2023, 11, 1)
 
 minimum_registration = 90  # 3months of previous registration
 
