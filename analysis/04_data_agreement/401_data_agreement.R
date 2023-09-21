@@ -77,12 +77,12 @@ kappa_calc <- function(df, var1, var2){
   kplot <- k %>% signif(2) %>% prettyNum()
   cap <- paste0("Cohen's kappa = ", kplot)
   pA <- ggplot(df) + 
-    geom_venn_v10(aes(A = get(var1), B = get(var2)), fill_color = c("indianred1", "darkslategray2"), set_names = c("OpenPROMPT", "OpenSAFELY"), show_outside = "always") +
+    geom_venn_v10(aes(A = get(var1), B = get(var2)), fill_color = c("indianred1", "darkslategray4"), set_names = c("OpenPROMPT", "OpenSAFELY"), show_outside = "always") +
     coord_fixed() +
     theme_void()
   
   pB <- ggplot(df) + 
-    geom_venn_v10(aes(A = get(var1), B = get(var2)), fill_color = c("indianred1", "darkslategray2"), set_names = c("", ""), auto_scale = TRUE, show_percentage = FALSE, text_size = 0.0001, stroke_size = 0.1) + 
+    geom_venn_v10(aes(A = get(var1), B = get(var2)), fill_color = c("indianred1", "darkslategray4"), set_names = c("", ""), auto_scale = TRUE, show_percentage = FALSE, text_size = 0.0001, stroke_size = 0.1) + 
     coord_fixed() +
     theme_void() +
     theme(panel.border = element_rect(colour = "gray40", fill = NA),
