@@ -99,7 +99,7 @@ op_master <- op_neat %>%
     OpenPROMPT_hhincome = base_hh_income,
     OpenPROMPT_age = op_age, 
     OpenPROMPT_agecat = op_age_cat,
-    OpenPROMPT_imd = op_imd, 
+    OpenPROMPT_imd = op_imd_q5, 
     OpenSAFELY_ethnicity = ethnicity,
     OpenSAFELY_gender = sex,
     OpenSAFELY_age = age, 
