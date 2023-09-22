@@ -65,7 +65,7 @@ if (!file.exists(here("output/tables/table2_fup_stats.csv"))) {
   p_age <- ggplot(age_cat_plot, aes(x = level, y = p, group = data_source, colour = data_source, linetype = data_source)) + 
     geom_point(pch = 1, size = 5) + 
     geom_line(linewidth = 1.1) +
-    scale_colour_manual(values = c("indianred1", "darkslategray4")) + 
+    scale_colour_manual(values = two_cols) + 
     labs(x = "Age category", y = "%", colour = "Data source", linetype = "Data source") +
     theme_ali() +
     theme(panel.grid.major.y = element_blank(),
@@ -76,6 +76,7 @@ if (!file.exists(here("output/tables/table2_fup_stats.csv"))) {
     stringr::str_wrap(string, width = 25)
   }
   
+  tab3stats$level <- ifelse(tab3stats$level == "refused", "refused/unknown", tab3stats$level)
   tab3plot <- tab3stats %>% 
     filter(is.na(mean)) %>% 
     mutate(level_temp = paste(variable, level, sep = "_"),
@@ -83,12 +84,6 @@ if (!file.exists(here("output/tables/table2_fup_stats.csv"))) {
   
   # position dodge
   pd <- position_dodge2(width = 0.9)
-  
-  # explicitly order the facet grid
-  facet_order <- unique(data_in$variable)[order(unique(data_in$variable), decreasing = FALSE)]
-  if(sum(facet_order=="Linked records available")==1){
-    facet_order <- c("Linked records available", facet_order[facet_order!="Linked records available"])
-  }
   
   # get x-axis labels
   labeller <- tab3plot %>% 
@@ -103,12 +98,29 @@ if (!file.exists(here("output/tables/table2_fup_stats.csv"))) {
     
     lp <- ifelse(plot_legend, "top", "none")
     
-    tab3plot %>% 
-      filter(variable == var) %>% 
-    ggplot(aes(x = level_temp, y = p, fill = data_source)) + 
+    varplot <- tab3plot %>% 
+      filter(variable == var) 
+    
+    ## household income labelslevels are a mess
+    if(var == "Household income (OpenPROMPT only)"){
+      varplot$level_temp <- factor(varplot$level_temp, 
+                                   levels = paste0(var, "_", 
+                                                   c("£6,000-12,999",
+                                                     "£13,000-18,999",
+                                                     "£19,000-25,999",
+                                                     "£26,000-31,999",
+                                                     "£32,000-47,999",
+                                                     "£48,000-63,999",
+                                                     "£64,000-95,999",
+                                                     "£96,000",
+                                                     "Not stated"
+                                                   )))
+    }
+    
+    ggplot(varplot, aes(x = level_temp, y = p, fill = data_source)) + 
       geom_col(position = pd) +
       scale_x_discrete(labels = labeller2) + 
-      scale_fill_manual(values = c("indianred1", "darkslategray4")) +
+      scale_fill_manual(values = two_cols) +
       labs(x = {var}, y = "Percent (%)", fill = "Data source") +
       theme_classic() +
       theme(

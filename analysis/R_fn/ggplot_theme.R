@@ -18,3 +18,5 @@ theme_ali <- function (base_size = 11, base_family = ""){
         strip.background = element_blank()
   )
 }
+
+two_cols <- c("#E7D918", "#1826E7")
