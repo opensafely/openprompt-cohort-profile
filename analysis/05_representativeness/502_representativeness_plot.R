@@ -96,11 +96,13 @@ if (!file.exists(here("output/tables/table2_fup_stats.csv"))) {
     slice(1) %>% 
     dplyr::select(level, level_temp)
   
-  labeller2 <- labeller$level
+  labeller2 <- stringr::str_to_title(labeller$level)
   names(labeller2) <- labeller$level_temp
   
   barplotting <- function(var, plot_legend = FALSE){
+    
     lp <- ifelse(plot_legend, "top", "none")
+    
     tab3plot %>% 
       filter(variable == var) %>% 
     ggplot(aes(x = level_temp, y = p, fill = data_source)) + 
@@ -138,7 +140,7 @@ if (!file.exists(here("output/tables/table2_fup_stats.csv"))) {
   
   figure4 <- cowplot::plot_grid(
     plot_grid(p_age, labels = LETTERS[1], ncol = 1),
-    plot_grid(p2, p3, p4, p5, ncol = 2, labels = LETTERS[2:5]),
+    plot_grid(p5, p3, p4, p2, ncol = 2, labels = LETTERS[2:5]),
     ncol = 1, rel_heights = c(0.4, 0.7)
   )
   
