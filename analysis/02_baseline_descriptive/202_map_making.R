@@ -63,10 +63,10 @@ if(!file.exists(here("data/NUTS_Level_1_January_2018_FEB_in_the_United_Kingdom.s
       geom_sf() +
       geom_sf(data = nuts_shp_eng, aes(geometry = geometry, fill=region_dist), lwd = .25, colour='black') +
       geom_sf_label(data = nuts_shp_eng, aes(label = paste0(round(region_dist,1),"%")),
-                    label.size = 0.1, 
+                    label.size = NA, 
                     colour = "white",
-                    fill = NA,
-                    
+                    fill = "gray19",
+                    alpha = 0.2,
                     label.r = unit(0.5, "lines"),
                     fun.geometry = st_centroid,
                     show.legend = F) +
