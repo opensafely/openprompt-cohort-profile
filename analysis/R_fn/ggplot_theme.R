@@ -19,4 +19,4 @@ theme_ali <- function (base_size = 11, base_family = ""){
   )
 }
 
-two_cols <- c("#E7D918", "#1826E7")
+two_cols <- c("dodgerblue", "firebrick")
