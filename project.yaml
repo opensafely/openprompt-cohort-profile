@@ -171,7 +171,7 @@ actions:
         table1: output/tables/table1.html
         table1_stats: output/tables/table1_stats.csv
 
-# Then need to run analysis/baseline_descriptive/002-map-making.R to produce the Figure 2 for the paper
+# Then need to run analysis/02_baseline_descriptive/002-map-making.R to produce the Figure 2 for the paper
 
   export_table2_fup_stats: 
     run: >
@@ -203,4 +203,5 @@ actions:
       moderately_sensitive: 
         table3_stats: output/tables/table3_rep_stats.csv
         table3: output/tables/table3_represetativeness.html
-        
+  
+# Then need to run analysis/05_representativeness/502_representativeness_plot.R to produce the Figure 4 for the paper
