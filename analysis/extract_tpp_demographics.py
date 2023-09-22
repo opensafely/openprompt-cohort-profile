@@ -17,7 +17,7 @@ import codelists
 dataset = Dataset()
 
 minimum_registration = 90  # 3months of previous registration
-study_start_date = datetime.date(2020, 3, 1)
+study_start_date = datetime.date(2022, 11, 1)
 end_date = datetime.date(2023, 11, 1)
 
 # practice registration selection
