@@ -33,7 +33,7 @@ var_labels <- list(
       eq5d_usualactivities ~ "EQ5D: usual activities",
       eq5d_pain_discomfort ~ "EQ5D: pain/discomfort",
       eq5d_anxiety_depression ~ "EQ5D: anxiety/depression",
-      work_affected ~ "How much has work been afffected",
+      work_affected ~ "How much has work been affected",
       life_affected ~ "How much has life been affected",
       facit_fatigue ~ "FACIT: feel fatigued",
       facit_weak  ~ "FACIT: feel weak", 
