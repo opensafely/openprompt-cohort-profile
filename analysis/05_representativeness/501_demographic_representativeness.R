@@ -30,7 +30,7 @@ op_master <- op_neat %>%
   mutate(
     sex = factor(sex, 
                  levels = c("female", "intersex", "male", "unknown"),
-                 labels = c("female", "intersex/non-binary/other/refused", "male", "unknown")),
+                 labels = c("female", "intersex/non-binary/other", "male", "refused")),
     ethnicity = factor(
       ethnicity,
       levels = 1:6, 
@@ -99,7 +99,7 @@ op_master <- op_neat %>%
     OpenPROMPT_hhincome = base_hh_income,
     OpenPROMPT_age = op_age, 
     OpenPROMPT_agecat = op_age_cat,
-    OpenPROMPT_imd = imd_q5, 
+    OpenPROMPT_imd = op_imd, 
     OpenSAFELY_ethnicity = ethnicity,
     OpenSAFELY_gender = sex,
     OpenSAFELY_age = age, 

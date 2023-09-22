@@ -361,11 +361,13 @@ op_neat$base_relationship <- factor(op_neat$base_relationship,
 op_neat$base_gender <- factor(op_neat$base_gender, 
                               levels = c("Male",
                                          "Female",
-                                         "Intersex/non-binary/other/refused",
+                                         "Intersex/non-binary/other",
+                                         "Refused",
                                          "NA"),
                               labels = c("Male",
                                          "Female",
-                                         "Intersex/non-binary/other/refused",
+                                         "Intersex/non-binary/other",
+                                         "Refused",
                                          "Not stated"))
 
 # Income 
