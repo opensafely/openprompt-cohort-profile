@@ -498,11 +498,8 @@ p1b <- ggplot(op_offset, aes(x = offset)) +
 
 ggsave(p1b, filename = here::here("output/plots/p1b_recorded_question_responses.jpeg"),
        width=12, height = 6, units="in")
-ggsave(p1b, filename = here::here("output/plots/p1b_recorded_question_responses.tiff"),
-       width=12, height = 6, units="in")
 
 # plot the distribution of ANY response to Eq5d compulsory question -------
-
 p1c <- ggplot(op_anyresponse, aes(x = day)) +
   geom_histogram(col = "darkred", fill = "red", alpha = 0.4, linewidth = 0.4, bins = 50) + 
   geom_vline(xintercept = 30, lty = 2) + 
@@ -515,8 +512,6 @@ p1c <- ggplot(op_anyresponse, aes(x = day)) +
        y = "Any response")
 
 ggsave(p1c, filename = here::here("output/plots/p1c_anyresponse_hist.jpeg"),
-       width=12, height = 6, units="in")
-ggsave(p1c, filename = here::here("output/plots/p1c_anyresponse_hist.tiff"),
        width=12, height = 6, units="in")
 
 # plot reverse KM for loss to follow up -----------------------------------
@@ -543,14 +538,9 @@ p1d <- surv_data %>%
 
 ggsave(p1d, filename = here::here("output/plots/p1d_ltfu.jpeg"),
        width=12, height = 6, units="in")
-ggsave(p1d, filename = here::here("output/plots/p1d_ltfu.tiff"),
-       width=12, height = 6, units="in")
-
 
 # combine follow up plots -------------------------------------------------
 p1 <- plot_grid(p1a, p1b, p1d, p1c, nrow = 2, labels = "AUTO")
 
 ggsave(p1, filename = here::here("output/plots/p1_fup.jpeg"),
-       width=12, height = 6, units="in")
-ggsave(p1, filename = here::here("output/plots/p1_fup.tiff"),
        width=12, height = 6, units="in")
