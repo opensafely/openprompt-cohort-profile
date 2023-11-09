@@ -28,7 +28,10 @@ floor_any <- function(x, to=1){
 redact_and_round <- function(x, redact_threshold = 7){
   x2 <- redactor2(x, redact_threshold)
   # round to nearest 7
-  round(x2/7)*7
+  x3 <- round(x2/7)*7
+  typedNA <- NA
+  mode(typedNA) <- typeof(x3)
+  dplyr::if_else(x3 == 0, typedNA, x3)
 }
 
 # little function to first redact n<7, then round to nearest 0.5 
