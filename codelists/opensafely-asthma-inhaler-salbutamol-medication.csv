@@ -1,51 +1,63 @@
-type,id,bnf_code,nm
-amp,3408611000001107,0301011R0AAAAAA,Salbutamol 100micrograms/dose inhaler (A A H Pharmaceuticals Ltd)
-amp,3410611000001106,0301011R0AAAAAA,Salbutamol 100micrograms/dose inhaler (Mylan)
-amp,3412611000001107,0301011R0AAAAAA,Salbutamol 100micrograms/dose inhaler (Kent Pharmaceuticals Ltd)
-amp,3415711000001107,0301011R0AAAAAA,Salbutamol 100micrograms/dose inhaler (Sandoz Ltd)
-amp,3417111000001102,0301011R0AAAAAA,Salbutamol 100micrograms/dose inhaler (Alliance Healthcare (Distribution) Ltd)
-amp,10432311000001108,0301011R0AAAAAA,Salbutamol 100micrograms/dose inhaler (Arrow Generics Ltd)
-amp,7511000001105,0301011R0AAAPAP,Salbutamol 100micrograms/dose inhaler CFC free (Actavis UK Ltd)
-amp,45111000001100,0301011R0AAAPAP,Salbutamol 100micrograms/dose inhaler CFC free (Mylan)
-amp,757611000001104,0301011R0AAAPAP,Salbutamol 100micrograms/dose inhaler CFC free (Teva UK Ltd)
-amp,18041311000001106,0301011R0AAAPAP,Salbutamol 100micrograms/dose inhaler CFC free (Sandoz Ltd)
-amp,840111000001107,0301011R0BDAEAP,Salbulin 100micrograms/dose inhaler (3M Health Care Ltd)
-amp,3382711000001107,0301011R0BEAHAQ,Ventolin 200micrograms/dose Accuhaler (GlaxoSmithKline UK Ltd)
-amp,222311000001102,0301011R0BEAIAP,Ventolin 100micrograms/dose Evohaler (GlaxoSmithKline UK Ltd)
-amp,3214211000001100,0301011R0BEAPAV,Ventolin 200microgram Rotacaps (GlaxoSmithKline UK Ltd)
-amp,3218011000001101,0301011R0BEAQAW,Ventolin 400microgram Rotacaps (GlaxoSmithKline UK Ltd)
-amp,106511000001103,0301011R0BIAFAP,Salamol 100micrograms/dose inhaler CFC free (Teva UK Ltd)
-amp,3215311000001107,0301011R0BIAGBU,Salamol 100micrograms/dose Easi-Breathe inhaler (Teva UK Ltd)
-amp,20434411000001107,0301011R0BIAHAP,Salamol 100micrograms/dose inhaler CFC free (Arrow Generics Ltd)
-amp,3186011000001104,0301011R0BJABAF,Asmasal 95micrograms/dose Clickhaler (Focus Pharmaceuticals Ltd)
-amp,3293111000001105,0301011R0BKADAD,Aerolin 100micrograms/dose Autohaler (3M Health Care Ltd)
-amp,3080411000001101,0301011R0BLAAAI,Ventodisks 200microgram with Diskhaler (GlaxoSmithKline UK Ltd)
-amp,3086111000001109,0301011R0BLABAK,Ventodisks 200microgram (GlaxoSmithKline UK Ltd)
-amp,3083011000001100,0301011R0BLACAJ,Ventodisks 400microgram with Diskhaler (GlaxoSmithKline UK Ltd)
-amp,3089011000001102,0301011R0BLADAL,Ventodisks 400microgram (GlaxoSmithKline UK Ltd)
-amp,597011000001101,0301011R0BMAAAP,Airomir 100micrograms/dose inhaler (Teva UK Ltd)
-amp,3214311000001108,0301011R0BMABBU,Airomir 100micrograms/dose Autohaler (Teva UK Ltd)
-amp,3214611000001103,0301011R0BPACAV,Salbutamol 200 Cyclocaps (Teva UK Ltd)
-amp,3217611000001109,0301011R0BPADAW,Salbutamol 400 Cyclocaps (Teva UK Ltd)
-amp,3384111000001103,0301011R0BTAABX,Pulvinal Salbutamol 200micrograms/dose dry powder inhaler (Chiesi Ltd)
-amp,9205211000001104,0301011R0BWAABZ,Easyhaler Salbutamol sulfate 100micrograms/dose dry powder inhaler (Orion Pharma (UK) Ltd)
-amp,9204911000001109,0301011R0BWABCA,Easyhaler Salbutamol sulfate 200micrograms/dose dry powder inhaler (Orion Pharma (UK) Ltd)
-amp,13533511000001104,0301011R0BXAACB,Salbulin Novolizer 100micrograms/dose inhalation powder (Mylan)
-amp,13533711000001109,0301011R0BXABCC,Salbulin Novolizer 100micrograms/dose inhalation powder refill (Mylan)
-amp,18148111000001107,0301011R0BYAAAP,Asmavent 100micrograms/dose inhaler CFC free (Kent Pharmaceuticals Ltd)
-amp,22503111000001109,0301011R0BZAAAP,AirSalb 100micrograms/dose inhaler CFC free (Sandoz Ltd)
-vmp,35936511000001108,0301011R0AAAAAA,Salbutamol 100micrograms/dose inhaler
-vmp,35936411000001109,0301011R0AAADAD,Salbutamol 100micrograms/dose breath actuated inhaler
-vmp,35937211000001107,0301011R0AAAFAF,Salbutamol 95micrograms/dose dry powder inhaler
-vmp,35936711000001103,0301011R0AAAIAI,Salbutamol 200microgram inhalation powder blisters with device
-vmp,35936911000001101,0301011R0AAAJAJ,Salbutamol 400microgram inhalation powder blisters with device
-vmp,35936611000001107,0301011R0AAAKAK,Salbutamol 200microgram inhalation powder blisters
-vmp,35936811000001106,0301011R0AAALAL,Salbutamol 400microgram inhalation powder blisters
-vmp,320139002,0301011R0AAAPAP,Salbutamol 100micrograms/dose inhaler CFC free
-vmp,320141001,0301011R0AAAQAQ,Salbutamol 200micrograms/dose dry powder inhaler
-vmp,320178003,0301011R0AAAVAV,Salbutamol 200microgram inhalation powder capsules
-vmp,320179006,0301011R0AAAWAW,Salbutamol 400microgram inhalation powder capsules
-vmp,320151000,0301011R0AABUBU,Salbutamol 100micrograms/dose breath actuated inhaler CFC free
-vmp,9207411000001106,0301011R0AABZBZ,Salbutamol 100micrograms/dose dry powder inhaler
-vmp,13566211000001103,0301011R0AACBCB,Salbutamol 100micrograms/dose dry powder inhalation cartridge with device
-vmp,13566111000001109,0301011R0AACCCC,Salbutamol 100micrograms/dose dry powder inhalation cartridge
+code,term,id
+3408611000001107,Salbutamol 100micrograms/dose inhaler (A A H Pharmaceuticals Ltd),3408611000001107
+3410611000001106,Salbutamol 100micrograms/dose inhaler (Mylan),3410611000001106
+3412611000001107,Salbutamol 100micrograms/dose inhaler (Kent Pharmaceuticals Ltd),3412611000001107
+3415711000001107,Salbutamol 100micrograms/dose inhaler (Sandoz Ltd),3415711000001107
+3417111000001102,Salbutamol 100micrograms/dose inhaler (Alliance Healthcare (Distribution) Ltd),3417111000001102
+10432311000001108,Salbutamol 100micrograms/dose inhaler (Arrow Generics Ltd),10432311000001108
+7511000001105,Salbutamol 100micrograms/dose inhaler CFC free (Actavis UK Ltd),7511000001105
+45111000001100,Salbutamol 100micrograms/dose inhaler CFC free (Mylan),45111000001100
+757611000001104,Salbutamol 100micrograms/dose inhaler CFC free (Teva UK Ltd),757611000001104
+18041311000001106,Salbutamol 100micrograms/dose inhaler CFC free (Sandoz Ltd),18041311000001106
+840111000001107,Salbulin 100micrograms/dose inhaler (3M Health Care Ltd),840111000001107
+3382711000001107,Ventolin 200micrograms/dose Accuhaler (GlaxoSmithKline UK Ltd),3382711000001107
+222311000001102,Ventolin 100micrograms/dose Evohaler (GlaxoSmithKline UK Ltd),222311000001102
+3214211000001100,Ventolin 200microgram Rotacaps (GlaxoSmithKline UK Ltd),3214211000001100
+3218011000001101,Ventolin 400microgram Rotacaps (GlaxoSmithKline UK Ltd),3218011000001101
+106511000001103,Salamol 100micrograms/dose inhaler CFC free (Teva UK Ltd),106511000001103
+3215311000001107,Salamol 100micrograms/dose Easi-Breathe inhaler (Teva UK Ltd),3215311000001107
+20434411000001107,Salamol 100micrograms/dose inhaler CFC free (Arrow Generics Ltd),20434411000001107
+3186011000001104,Asmasal 95micrograms/dose Clickhaler (Focus Pharmaceuticals Ltd),3186011000001104
+3293111000001105,Aerolin 100micrograms/dose Autohaler (3M Health Care Ltd),3293111000001105
+3080411000001101,Ventodisks 200microgram with Diskhaler (GlaxoSmithKline UK Ltd),3080411000001101
+3086111000001109,Ventodisks 200microgram (GlaxoSmithKline UK Ltd),3086111000001109
+3083011000001100,Ventodisks 400microgram with Diskhaler (GlaxoSmithKline UK Ltd),3083011000001100
+3089011000001102,Ventodisks 400microgram (GlaxoSmithKline UK Ltd),3089011000001102
+597011000001101,Airomir 100micrograms/dose inhaler (Teva UK Ltd),597011000001101
+3214311000001108,Airomir 100micrograms/dose Autohaler (Teva UK Ltd),3214311000001108
+3214611000001103,Salbutamol 200 Cyclocaps (Teva UK Ltd),3214611000001103
+3217611000001109,Salbutamol 400 Cyclocaps (Teva UK Ltd),3217611000001109
+3384111000001103,Pulvinal Salbutamol 200micrograms/dose dry powder inhaler (Chiesi Ltd),3384111000001103
+9205211000001104,Easyhaler Salbutamol sulfate 100micrograms/dose dry powder inhaler (Orion Pharma (UK) Ltd),9205211000001104
+9204911000001109,Easyhaler Salbutamol sulfate 200micrograms/dose dry powder inhaler (Orion Pharma (UK) Ltd),9204911000001109
+13533511000001104,Salbulin Novolizer 100micrograms/dose inhalation powder (Mylan),13533511000001104
+13533711000001109,Salbulin Novolizer 100micrograms/dose inhalation powder refill (Mylan),13533711000001109
+18148111000001107,Asmavent 100micrograms/dose inhaler CFC free (Kent Pharmaceuticals Ltd),18148111000001107
+22503111000001109,AirSalb 100micrograms/dose inhaler CFC free (Sandoz Ltd),22503111000001109
+35936511000001108,Salbutamol 100micrograms/dose inhaler,35936511000001108
+35936411000001109,Salbutamol 100micrograms/dose breath actuated inhaler,35936411000001109
+35937211000001107,Salbutamol 95micrograms/dose dry powder inhaler,35937211000001107
+35936711000001103,Salbutamol 200microgram inhalation powder blisters with device,35936711000001103
+35936911000001101,Salbutamol 400microgram inhalation powder blisters with device,35936911000001101
+35936611000001107,Salbutamol 200microgram inhalation powder blisters,35936611000001107
+35936811000001106,Salbutamol 400microgram inhalation powder blisters,35936811000001106
+320139002,Salbutamol 100micrograms/dose inhaler CFC free,320139002
+320141001,Salbutamol 200micrograms/dose dry powder inhaler,320141001
+320178003,Salbutamol 200microgram inhalation powder capsules,320178003
+320179006,Salbutamol 400microgram inhalation powder capsules,320179006
+320151000,Salbutamol 100micrograms/dose breath actuated inhaler CFC free,320151000
+9207411000001106,Salbutamol 100micrograms/dose dry powder inhaler,9207411000001106
+13566211000001103,Salbutamol 100micrograms/dose dry powder inhalation cartridge with device,13566211000001103
+13566111000001109,Salbutamol 100micrograms/dose dry powder inhalation cartridge,13566111000001109
+320132006,VMP previous to 35936711000001103,320132006
+320133001,VMP previous to 35936911000001101,320133001
+320134007,VMP previous to 35936611000001107,320134007
+320135008,VMP previous to 35936811000001106,320135008
+320136009,VMP previous to 35936411000001109,320136009
+320148007,VMP previous to 35937211000001107,320148007
+320176004,VMP previous to 35936511000001108,320176004
+39112711000001103,VMP subsequent to 320151000,39112711000001103
+39113311000001107,VMP subsequent to 320141001,39113311000001107
+39113611000001102,VMP subsequent to 320139002,39113611000001102
+39709711000001100,VMP subsequent to 320178003,39709711000001100
+39709811000001108,VMP subsequent to 320179006,39709811000001108
