@@ -126,8 +126,7 @@ pcombo <- plot_grid(
   )
 
 ggsave(filename = here::here("output/plots/venn.pdf"), pcombo, width = 8, height = 14,bg = "white")
-ggsave(filename = here::here("output/plots/venn.tiff"), dpi = 450, pcombo, width = 8, height = 14,bg = "white")
-ggsave(filename = here::here("output/plots/venn.png"), dpi = 450, pcombo, width = 8, height = 14, bg = "white")
+ggsave(filename = here::here("output/plots/venn.jpeg"), dpi = 450, pcombo, width = 8, height = 14, bg = "white")
 
 # export the data ---------------------------------------------------------
 vacc_out <- cbind(vacc$tab, vacc$p) %>% as.data.frame() 
