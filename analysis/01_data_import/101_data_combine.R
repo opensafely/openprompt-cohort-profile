@@ -18,6 +18,7 @@ source(here("analysis/master_mapping.R"))
 ## create directories for output
 fs::dir_create(here("output/data_properties"))
 fs::dir_create(here("output/plots"))
+fs::dir_create(here("output/tables"))
 
 redact_threshold <- 7
 
