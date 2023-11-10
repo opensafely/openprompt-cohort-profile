@@ -19,6 +19,8 @@ source(here("analysis/master_mapping.R"))
 fs::dir_create(here("output/data_properties"))
 fs::dir_create(here("output/plots"))
 
+redact_threshold <- 7
+
 # import the day of any response by each participant ----------------------
 ## make the data long format and keep value == 1 only (i.e. a valid response was recorded to eq5d question)
 op_anyresponse <- read_csv(here("output/openprompt_all.csv")) %>% 
@@ -485,7 +487,17 @@ op_offset <- op_neat %>%
   # calculate offset variable
   mutate(offset = as.numeric(value - index_date)) 
 
-p1b <- ggplot(op_offset, aes(x = offset)) +
+unredacted_offset_days <- op_offset %>% 
+  group_by(offset) %>% 
+  summarise(included_responses = n()) %>% 
+  filter(included_responses > redact_threshold) 
+
+write_csv(unredacted_offset_days, here::here("output/tables/fig1b_data.csv"))
+
+op_offset_plot <- op_offset %>% 
+  filter(offset %in% unredacted_offset_days$offset)
+
+p1b <- ggplot(op_offset_plot, aes(x = offset)) +
   geom_histogram(col = "darkblue", fill = "blue", alpha = 0.4, linewidth = 0.4, bins = 50) +
   geom_vline(xintercept = 30, lty = 2) + 
   geom_vline(xintercept = 60, lty = 2) + 
@@ -499,20 +511,6 @@ p1b <- ggplot(op_offset, aes(x = offset)) +
 ggsave(p1b, filename = here::here("output/plots/p1b_recorded_question_responses.jpeg"),
        width=12, height = 6, units="in")
 
-# plot the distribution of ANY response to Eq5d compulsory question -------
-p1c <- ggplot(op_anyresponse, aes(x = day)) +
-  geom_histogram(col = "darkred", fill = "red", alpha = 0.4, linewidth = 0.4, bins = 50) + 
-  geom_vline(xintercept = 30, lty = 2) + 
-  geom_vline(xintercept = 60, lty = 2) + 
-  geom_vline(xintercept = 90, lty = 2) +
-  xlim(c(-5, 120)) +
-  ylim(c(0, NA)) +
-  theme_ali() +
-  labs(x = "Days since index",
-       y = "Any response")
-
-ggsave(p1c, filename = here::here("output/plots/p1c_anyresponse_hist.jpeg"),
-       width=12, height = 6, units="in")
 
 # plot reverse KM for loss to follow up -----------------------------------
 op_max_fup <- op_neat %>% 
@@ -524,7 +522,9 @@ op_max_fup <- op_neat %>%
 
 surv_data <- create_rounded_surv_table(op_max_fup)
 
-p1d <- surv_data %>%
+write_csv(select(surv_data, time, surv, n.event), here::here("output/tables/fig1c_data.csv"))
+
+p1c <- surv_data %>%
   ggplot(aes(x = time, y = surv)) + geom_step(size = 0.5) +
   geom_rect(aes(xmin=lagtime, xmax = time, ymin=(surv.ll), ymax=(surv.ul)), alpha=0.1, colour="transparent") +
   ylim(0,1) +
@@ -536,11 +536,38 @@ p1d <- surv_data %>%
   theme_ali() +
   guides(fill="none")
 
-ggsave(p1d, filename = here::here("output/plots/p1d_ltfu.jpeg"),
+ggsave(p1c, filename = here::here("output/plots/p1c_ltfu.jpeg"),
+       width=12, height = 6, units="in")
+
+# plot the distribution of ANY response to Eq5d compulsory question -------
+unredacted_anyresponse <- op_anyresponse %>% 
+  group_by(day) %>% 
+  summarise(any_response = n()) %>% 
+  filter(any_response > redact_threshold)
+
+write_csv(unredacted_anyresponse, here::here("output/tables/fig1d_data.csv"))
+
+op_anyresponse_plot <- op_anyresponse %>% 
+  filter(day %in% unredacted_anyresponse$day)
+
+p1d <- ggplot(op_anyresponse_plot, aes(x = day)) +
+  geom_histogram(col = "darkred", fill = "red", alpha = 0.4, linewidth = 0.4, bins = 50) + 
+  geom_vline(xintercept = 30, lty = 2) + 
+  geom_vline(xintercept = 60, lty = 2) + 
+  geom_vline(xintercept = 90, lty = 2) +
+  xlim(c(-5, 120)) +
+  ylim(c(0, NA)) +
+  theme_ali() +
+  labs(x = "Days since index",
+       y = "Any response")
+
+ggsave(p1d, filename = here::here("output/plots/p1d_anyresponse_hist.jpeg"),
        width=12, height = 6, units="in")
 
 # combine follow up plots -------------------------------------------------
-p1 <- plot_grid(p1a, p1b, p1d, p1c, nrow = 2, labels = "AUTO")
+p1 <- plot_grid(p1a, p1b, p1c, p1d, nrow = 2, labels = "AUTO")
 
 ggsave(p1, filename = here::here("output/plots/p1_fup.jpeg"),
+       width=12, height = 6, units="in")
+ggsave(p1, filename = here::here("output/plots/p1_fup.pdf"),
        width=12, height = 6, units="in")
