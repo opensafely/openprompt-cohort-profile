@@ -95,7 +95,7 @@ geom_venn_v10 <- function(mapping = NULL, data = NULL,
                       text_size = 4) {
   show_outside <- match.arg(show_outside)
   l <- layer(mapping = mapping, data = data,
-             geom = GeomVenn, stat = stat, position = position,
+             geom = GeomVennOS, stat = stat, position = position,
              params = list(na.rm = TRUE, ...))
   old_compute_aesthetics <- l$compute_aesthetics
   l$compute_aesthetics <- function(self, data, plot) {
@@ -131,8 +131,8 @@ geom_venn_v10 <- function(mapping = NULL, data = NULL,
   l
 }
 
-#' @importFrom grid grobTree polygonGrob textGrob gpar
-GeomVenn <- ggproto("GeomVenn", Geom,
+#' @importFrom grid grobTree polygonGrob textGrob gpar - OpenSAFELY version
+GeomVennOS <- ggproto("GeomVenn", Geom,
                     required_aes = c("A", "B"),
                     optional_aes = c("C", "D", "label"),
                     extra_params = c("na.rm"),
@@ -612,9 +612,9 @@ prepare_venn_data <- function(data, columns = NULL,
         idx <- ((!xor(df_element$A[[i]], as_tibble(data)[,columns[[1]]])) &
                   (!xor(df_element$B[[i]], as_tibble(data)[,columns[[2]]])))
         if (is.null(count_column)) {
-          df_element$n[[i]] <- sum(idx)
+          df_element$n[[i]] <- redact_and_round(sum(idx), redact_threshold = 7)
         } else {
-          df_element$n[[i]] <- sum(as_tibble(data)[,count_column][idx,])
+          df_element$n[[i]] <- redact_and_round(sum(as_tibble(data)[,count_column][idx,]), 7)
         }
         if (!identical(show_elements, FALSE)) {
           df_element$text[[i]] <- paste(unlist(as_tibble(data)[idx,show_elements]), collapse = label_sep)
@@ -625,56 +625,8 @@ prepare_venn_data <- function(data, columns = NULL,
       df_text <- gen_text_pos_2(scale_info) %>% inner_join(df_element, by = "name")
       df_label <- gen_label_pos_2(scale_info)
       df_seg <- gen_seg_pos_2(scale_info)
-    } else if (length(columns) == 3) {
-      stopifnot(is.logical(as_tibble(data)[,columns[[1]], drop = TRUE]))
-      stopifnot(is.logical(as_tibble(data)[,columns[[2]], drop = TRUE]))
-      stopifnot(is.logical(as_tibble(data)[,columns[[3]], drop = TRUE]))
-      df_element <- gen_element_df_3()
-      for (i in 1:nrow(df_element)) {
-        idx <- ((!xor(df_element$A[[i]], as_tibble(data)[,columns[[1]]])) &
-                  (!xor(df_element$B[[i]], as_tibble(data)[,columns[[2]]])) &
-                  (!xor(df_element$C[[i]], as_tibble(data)[,columns[[3]]])))
-        if (is.null(count_column)) {
-          df_element$n[[i]] <- sum(idx)
-        } else {
-          df_element$n[[i]] <- sum(as_tibble(data)[,count_column][idx,])
-        }
-        if (!identical(show_elements, FALSE)) {
-          df_element$text[[i]] <- paste(unlist(as_tibble(data)[idx,show_elements]), collapse = label_sep)
-        }
-      }
-      scale_info <- calc_scale_info_3(auto_scale, df_element$n)
-      df_shape <- gen_circle_3()
-      df_text <- gen_text_pos_3() %>% inner_join(df_element, by = "name")
-      df_label <- gen_label_pos_3()
-      df_seg <- gen_seg_pos_3(scale_info)
-    } else if (length(columns) == 4) {
-      stopifnot(is.logical(as_tibble(data)[,columns[[1]], drop = TRUE]))
-      stopifnot(is.logical(as_tibble(data)[,columns[[2]], drop = TRUE]))
-      stopifnot(is.logical(as_tibble(data)[,columns[[3]], drop = TRUE]))
-      stopifnot(is.logical(as_tibble(data)[,columns[[4]], drop = TRUE]))
-      df_element <- gen_element_df_4()
-      for (i in 1:nrow(df_element)) {
-        idx <- ((df_element$A[[i]] == as_tibble(data)[,columns[[1]], drop = TRUE]) &
-                  (df_element$B[[i]] == as_tibble(data)[,columns[[2]], drop = TRUE]) &
-                  (df_element$C[[i]] == as_tibble(data)[,columns[[3]], drop = TRUE]) &
-                  (df_element$D[[i]] == as_tibble(data)[,columns[[4]], drop = TRUE]))
-        if (is.null(count_column)) {
-          df_element$n[[i]] <- sum(idx)
-        } else {
-          df_element$n[[i]] <- sum(as_tibble(data)[,count_column][idx,])
-        }
-        if (!identical(show_elements, FALSE)) {
-          df_element$text[[i]] <- paste(unlist(as_tibble(data)[idx,show_elements]), collapse = label_sep)
-        }
-      }
-      scale_info <- calc_scale_info_4(auto_scale, df_element$n)
-      df_shape <- gen_circle_4()
-      df_text <- gen_text_pos_4() %>% inner_join(df_element, by = "name")
-      df_label <- gen_label_pos_4()
-      df_seg <- gen_seg_pos_4(scale_info)
     } else {
-      stop("logical columns in data.frame `data` or vector `columns` should be length between 2 and 4")
+      stop("logical columns in data.frame `data` or vector `columns` should be length  2 ")
     }
     df_label <- df_label %>% mutate(text = columns)
     show_elements <- !identical(show_elements, FALSE)
@@ -696,37 +648,8 @@ prepare_venn_data <- function(data, columns = NULL,
       df_text <- gen_text_pos_2(scale_info) %>% inner_join(df_element, by = "name")
       df_label <- gen_label_pos_2(scale_info)
       df_seg <- gen_seg_pos_2(scale_info)
-    } else if (length(columns) == 3) {
-      df_element <- gen_element_df_3()
-      for (i in 1:nrow(df_element)) {
-        idx <- ((!xor(df_element$A[[i]], a2 %in% data[[columns[[1]]]])) &
-                  (!xor(df_element$B[[i]], a2 %in% data[[columns[[2]]]])) &
-                  (!xor(df_element$C[[i]], a2 %in% data[[columns[[3]]]])))
-        df_element$n[[i]] <- sum(idx)
-        df_element$text[[i]] <- paste(a2[idx], collapse = label_sep)
-      }
-      scale_info <- calc_scale_info_3(auto_scale, df_element$n)
-      df_shape <- gen_circle_3()
-      df_text <- gen_text_pos_3() %>% inner_join(df_element, by = "name")
-      df_label <- gen_label_pos_3()
-      df_seg <- gen_seg_pos_3(scale_info)
-    } else if (length(columns) == 4) {
-      df_element <- gen_element_df_4()
-      for (i in 1:nrow(df_element)) {
-        idx <- ((!xor(df_element$A[[i]], a2 %in% data[[columns[[1]]]])) &
-                  (!xor(df_element$B[[i]], a2 %in% data[[columns[[2]]]])) &
-                  (!xor(df_element$C[[i]], a2 %in% data[[columns[[3]]]])) &
-                  (!xor(df_element$D[[i]], a2 %in% data[[columns[[4]]]])))
-        df_element$n[[i]] <- sum(idx)
-        df_element$text[[i]] <- paste(a2[idx], collapse = label_sep)
-      }
-      scale_info <- calc_scale_info_4(auto_scale, df_element$n)
-      df_shape <- gen_circle_4()
-      df_text <- gen_text_pos_4() %>% inner_join(df_element, by = "name")
-      df_label <- gen_label_pos_4()
-      df_seg <- gen_seg_pos_4(scale_info)
     } else {
-      stop("list `data` or vector `column` should be length between 2 and 4")
+      stop("list `data` or vector `column` should be length 2")
     }
     df_label <- df_label %>% mutate(text = columns)
   } else {
