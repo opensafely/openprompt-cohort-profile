@@ -20,8 +20,8 @@ threshold <- 7
 
 
 # check if data exists before running into errors -------------------------
-if (!file.exists(here("output/tables/table2_fup_stats.csv"))) {
-  stop( "You need to release output/table2_fup_stats.csv from the secure server" )
+if (!file.exists(here("output/tables/table3_rep_stats.csv"))) {
+  stop( "You need to release output/table3_rep_stats.csv from the secure server" )
 } else{
   
   ## import the represertnativeness data
