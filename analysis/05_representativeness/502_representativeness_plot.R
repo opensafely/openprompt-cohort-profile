@@ -78,7 +78,7 @@ if (!file.exists(here("output/tables/table3_rep_stats.csv"))) {
   
   tab3stats$level <- ifelse(tab3stats$level == "refused", "refused/unknown", tab3stats$level)
   tab3plot <- tab3stats %>% 
-    filter(is.na(mean)) %>% 
+    filter(is.na(median)) %>% 
     mutate(level_temp = paste(variable, level, sep = "_"),
            level_temp2 = factor(level_temp, levels = level_temp, labels = level))
   
@@ -134,7 +134,7 @@ if (!file.exists(here("output/tables/table3_rep_stats.csv"))) {
         axis.line=element_line(),
         legend.position = lp,
         legend.title = element_text(face = "bold", size = 10),
-        axis.text.x = element_text(face = "bold", angle = 10, hjust = 0.95),
+        axis.text.x = element_text(face = "bold", angle = 20, hjust = 0.95),
         panel.grid.major.y = element_blank(), 
         axis.title = element_text(size = 10, face = "bold"),
         plot.title = element_text(
@@ -156,8 +156,8 @@ if (!file.exists(here("output/tables/table3_rep_stats.csv"))) {
     ncol = 1, rel_heights = c(0.4, 0.7)
   )
   
-  ggsave(filename=here::here("output", "plots","openprompt_figure4.tiff"), figure4, dpi=450, width = 13, height = 8, units = "in", bg = "white")
-  ggsave(filename=here::here("output", "plots","openprompt_figure4.png"),  figure4, dpi=450, width = 13, height = 8, units = "in", bg = "white")
+  ggsave(filename=here::here("output", "plots","openprompt_figure4.tiff"), figure4, dpi=450, width = 10, height = 8, units = "in", bg = "white")
+  ggsave(filename=here::here("output", "plots","openprompt_figure4.png"),  figure4, dpi=450, width = 10, height = 8, units = "in", bg = "white")
 
 }
 

@@ -74,7 +74,7 @@ var_labels <- var_labels %>%
 tab1 <- op_table_stats %>%
   tbl_summary(
     statistic = list(
-      all_continuous() ~ "{mean} ({p25}-{p75})",
+      all_continuous() ~ "{median} ({p25}-{p75})",
       all_categorical() ~ "{n} ({p}%)"
     ),
     type = list(
@@ -137,11 +137,11 @@ raw_stats_redacted_catgorical <- raw_stats %>%
 
 raw_stats_redacted_numeric <- raw_stats %>% 
   filter(is.na(n)) %>% 
-  mutate_at(c("mean", "p25", "p75"), ~prettyNum(formatC(., digits = 1, format = "f"), 
+  mutate_at(c("median", "p25", "p75"), ~prettyNum(formatC(., digits = 1, format = "f"), 
                                    big.mark = ",", preserve.width = "none",
                                    drop0trailing = TRUE)) %>% 
   mutate(
-    stat = paste0(mean, " (", p25, "-", p75, ")"),
+    stat = paste0(median, " (", p25, "-", p75, ")"),
     var_label = factor(
       var_label,
       levels = names(var_labels),

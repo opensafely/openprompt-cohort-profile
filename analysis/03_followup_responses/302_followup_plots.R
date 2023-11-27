@@ -41,7 +41,7 @@ if (!file.exists(here("output/tables/table2_fup_stats.csv"))) {
   table2_n <- tab2stats %>% 
     ## different numbers of people will have answered the various questions
     group_by(survey_response) %>% 
-    summarise(stat = prettyNum(mean(N), big.mark = ",")) %>%
+    summarise(stat = prettyNum(median(N), big.mark = ",")) %>%
     ungroup() %>% 
     mutate(variable = "N") %>% 
     ## format for bind_rows

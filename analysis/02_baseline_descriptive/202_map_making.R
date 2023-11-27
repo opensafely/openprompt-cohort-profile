@@ -18,8 +18,8 @@ source(here("analysis/R_fn/ggplot_theme.R"))
 threshold <- 7
 
 # read_in_data ------------------------------------------------------------
-if(!file.exists(here("data/NUTS_Level_1_January_2018_FEB_in_the_United_Kingdom.shp"))) {
-  stop( "You need to download the NUTS_Level_1_January_2018_FEB_in_the_United_Kingdom.shp files from https://geoportal.statistics.gov.uk" )
+if(!file.exists(here("data/NUTS_Level_1_January_2018_FCB_in_the_United_Kingdom.shp"))) {
+  stop( "You need to download the NUTS_Level_1_January_2018_FCB_in_the_United_Kingdom.shp files from https://geoportal.statistics.gov.uk" )
 } else if (!file.exists(here("output/tables/table1_stats.csv"))) {
   stop( "You need to release output/table1_stats.csv from the secure server" )
 } else{
@@ -43,15 +43,15 @@ if(!file.exists(here("data/NUTS_Level_1_January_2018_FEB_in_the_United_Kingdom.s
     rename("region_dist" = "p",
            "region" = "level")
   
-  nuts_shp <- st_read("data/NUTS_Level_1_January_2018_FEB_in_the_United_Kingdom.shp")
+  nuts_shp <- st_read("data/NUTS_Level_1_January_2018_FCB_in_the_United_Kingdom.shp")
   
   
   worldmap <- map_data("world")
   
-  
   nuts_shp_eng <- nuts_shp %>% 
     filter(stringr::str_detect(nuts118nm, "England|Yorkshire|London")) %>% 
     mutate(region = stringr::str_remove_all(nuts118nm, " \\(England\\)")) %>% 
+    mutate(region = stringr::str_remove_all(region, " of England")) %>% 
     left_join(region_dist, by="region")
   
   if(!file.exists(here("data/bdline_essh_gb/Data/Supplementary_Country/country_region.shp"))){
@@ -78,7 +78,17 @@ if(!file.exists(here("data/NUTS_Level_1_January_2018_FEB_in_the_United_Kingdom.s
       xlab("") + 
       ylab("")
     
-    ggsave(filename=here::here("output", "plots","openprompt_dist_map.tiff"),coverage_plot,dpi=600,width = 20,height = 20, units = "cm")
+    grDevices::tiff(filename = here::here("output", "plots","openprompt_dist_map.tiff"),
+                    bg = "transparent",
+                    res=50,
+                    width = 20,height = 20, units = "cm")
+      coverage_plot
+    dev.off()
+    
+    # ggsave(filename=here::here("output", "plots","openprompt_dist_map.tiff"),
+    #        device = grDevices::tiff,
+    #        coverage_plot,
+    #        dpi=600,width = 20,height = 20, units = "cm")
     
     ## p1B - age distribution
     categorical_data <- table1_stats %>% 
@@ -171,14 +181,14 @@ if(!file.exists(here("data/NUTS_Level_1_January_2018_FEB_in_the_United_Kingdom.s
       mutate(stat = stringr::str_split(stat, n = 4, pattern = "\\(|-|\\)")) %>% 
       unnest(stat) %>% 
       mutate(stat = as.numeric(stat),
-             name = c("mean", "p25", "p75", NA)) %>% 
+             name = c("median", "p25", "p75", NA)) %>% 
       filter(!is.na(stat)) %>% 
       pivot_wider(values_from = stat)
       
-    p1d <- ggplot(continuous_data, aes(x = variable, y = mean)) +
+    p1d <- ggplot(continuous_data, aes(x = variable, y = median)) +
       geom_errorbar(aes(ymin = p25, ymax = p75), colour = "darkblue", width = 0.25) +
       geom_point(col = "darkblue", size = 20, shape = 18) +
-      labs(x = "", y = "Mean (IQR)") +
+      labs(x = "", y = "Median (IQR)") +
       ylim(c(0,100)) +
       coord_flip() +
       theme_ali() +
