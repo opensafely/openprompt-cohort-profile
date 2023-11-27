@@ -22,7 +22,7 @@ op_master <- op_neat %>%
   left_join(op_tpp, by = "patient_id")
 
 op_table_stats <- op_master %>% 
-  filter(survey_response == 1) %>% 
+  filter(survey_response == 1 & base_gender != "") %>% 
   mutate(
     tpp_data = !is.na(age)
     ) %>% 
