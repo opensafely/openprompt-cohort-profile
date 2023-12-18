@@ -151,22 +151,22 @@ if(!file.exists(here("data/NUTS_Level_1_January_2018_FCB_in_the_United_Kingdom.s
         theme_classic() +
         theme(
           panel.background = element_blank(), 
-          title = element_text(size = 9),
+          title = element_text(size = 12),
           strip.background = element_rect(colour = NA, fill = NA),
           strip.text.x = element_text(face = "bold", size = 9),
-          strip.text.y.left = element_text(size = 9, angle = 0, hjust = 0, vjust = 0.9, face = 3),
+          strip.text.y.left = element_text(size = 13, angle = 0, hjust = 0, vjust = 0.9, face = 2),
           strip.placement = "outside",
           panel.border = element_rect(fill = NA, color = NA),
           axis.line=element_line(),
           legend.position = "right",
           legend.title = element_text(face = "bold", size = 10),
-          axis.text.x = element_text(face = "bold"),
           panel.grid.major.y = element_blank(), 
-          axis.title = element_text(size = 10, face = "bold"),
+          axis.title = element_text(size = 13, face = "bold"),
+          axis.text = element_text(size = 12),
           plot.title = element_text(
             face = "bold",
             hjust = 0.5,
-            size = 13
+            size = 1
           )
         ) 
     }
@@ -194,7 +194,9 @@ if(!file.exists(here("data/NUTS_Level_1_January_2018_FCB_in_the_United_Kingdom.s
       theme_ali() +
       theme(axis.line.y = element_blank(),
             panel.border = element_rect(fill = NA, colour = "white"),
-            panel.grid = element_blank())
+            panel.grid = element_blank(),
+            axis.text = element_text(size = 12)
+      )
     
     ## combine the plots and output
     figure2 <- cowplot::plot_grid(
@@ -202,7 +204,7 @@ if(!file.exists(here("data/NUTS_Level_1_January_2018_FCB_in_the_United_Kingdom.s
       cowplot::plot_grid(p1c, p1b, ncol = 1, labels = c("B", "D"), rel_heights = c(1.025, 1)), 
       ncol = 2, nrow = 1, rel_widths = c(0.7, 1))
     
-    ggsave(filename=here::here("output", "plots","openprompt_figure2.tiff"), figure2, dpi=450, width = 14, height = 12, units = "in", bg = "white")
-    ggsave(filename=here::here("output", "plots","openprompt_figure2.png"),  figure2, dpi=450, width = 14, height = 12, units = "in", bg = "white")
-  }
+    ggsave(filename=here::here("output", "plots","openprompt_figure2.tiff"), figure2, dpi=450, width = 13, height = 16, units = "in", bg = "white")
+    ggsave(filename=here::here("output", "plots","openprompt_figure2.png"),  figure2, dpi=450, width = 13, height = 16, units = "in", bg = "white")
+   }
 }

@@ -92,7 +92,8 @@ if (!file.exists(here("output/tables/table2_fup_stats.csv"))) {
         scale_colour_brewer(palette = pals[stringsearch]) +
         labs(y = "n", x = "Survey round", colour = "Response", fill = "Response") +
         theme_ali() +
-        theme(strip.text = element_text(face = "bold", hjust = 0, colour = "gray20"),
+        theme(strip.text = element_text(size = 12, face = "bold", hjust = 0, colour = "gray20"),
+              axis.text = element_text(size = 11),
               legend.position = legend,
               panel.grid.major.y = element_blank(),
               axis.line=element_line())
