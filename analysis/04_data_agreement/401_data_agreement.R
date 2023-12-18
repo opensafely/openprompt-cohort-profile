@@ -40,7 +40,7 @@ covid_agreement <- op_master %>%
   filter(survey_response == 1) %>% 
   dplyr::select(all_test_positive, all_covid_hosp, total_primarycare_covid, covid_history, n_covids) %>% 
   filter(!is.na(all_test_positive)) %>% 
-  mutate(op_covid = stringr::str_detect(covid_history, "Yes|yes") | !n_covids %in% c("0", NA),
+  mutate(op_covid = covid_history == "Yes (+ve test)",
          tpp_covid = all_test_positive != 0 | all_covid_hosp > 0 | total_primarycare_covid > 0)
 
 longcovid_agreement <- op_master %>% 
